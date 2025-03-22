@@ -910,6 +910,42 @@ createButton("Very funni jumpstyle song", function()
         end
     end)
 
+createButton("Face all billboard", function()
+    local textureId = "rbxassetid://126968470687373" -- Defined inside createButton function
+
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player.Character then
+            local head = player.Character:FindFirstChild("Head")
+            if head then
+                -- Remove existing BillboardGui to prevent duplicates
+                if head:FindFirstChild("FaceBillboard") then
+                    head:FindFirstChild("FaceBillboard"):Destroy()
+                end
+
+                -- Create BillboardGui
+                local billboard = Instance.new("BillboardGui")
+                billboard.Name = "FaceBillboard"
+                billboard.Adornee = head
+                billboard.Size = UDim2.new(2.5, 0, 2.5, 0) -- Adjusted to fit face
+                billboard.StudsOffset = Vector3.new(0, 0, 0.01) -- Slightly in front of face
+                billboard.AlwaysOnTop = true
+                billboard.LightInfluence = 0
+                billboard.Parent = head
+
+                -- Create ImageLabel for the face texture
+                local imageLabel = Instance.new("ImageLabel")
+                imageLabel.Size = UDim2.new(1, 0, 1, 0)
+                imageLabel.BackgroundTransparency = 1
+                imageLabel.Image = textureId
+                imageLabel.Parent = billboard
+
+                -- Align BillboardGui to the face
+                billboard.StudsOffsetWorldSpace = head.CFrame.LookVector * 0.01
+            end
+        end
+    end
+end)
+
 createButton("Nootaz Warning: Be ready for chaos.", function()
     -- Variables
     local pingudecal = "http://www.roblox.com/asset/?id=382332426"
