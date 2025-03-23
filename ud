@@ -715,6 +715,28 @@ createButton("Billboard Pyramid", function()
         sound:Destroy()
     end)
 
+createButton("Jumpscare Jeff Killer", function()
+        local blackScreen = Instance.new("Frame", screenGui)
+        blackScreen.Size = UDim2.new(1, 0, 1, 0)
+        blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        blackScreen.ZIndex = 10
+
+        local jumpscareImage = Instance.new("ImageLabel", blackScreen)
+        jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
+        jumpscareImage.Image = "rbxassetid://109035134738815"
+        jumpscareImage.BackgroundTransparency = 1
+        jumpscareImage.ZIndex = 11
+
+        local sound = Instance.new("Sound", game.Workspace)
+        sound.SoundId = "rbxassetid://6129291390"
+        sound.Volume = 9999
+        sound:Play()
+        
+        task.wait(9)
+        blackScreen:Destroy()
+        sound:Destroy()
+    end)
+
     createButton("666", function()
         for _, v in pairs(game.Workspace:GetDescendants()) do
             if v:IsA("BasePart") then
