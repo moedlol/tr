@@ -1704,6 +1704,94 @@ end)
         end
     end)
 
+createButton("Chicken arms", function()
+    local Chicken = game.Players.LocalPlayer.Name
+    local character = game.Workspace[Chicken]
+    
+    -- Left arm chicken pose
+    character.Torso["Left Shoulder"].C0 = CFrame.new(-1.5, 0.5, 0) * 
+        CFrame.fromEulerAnglesXYZ(0, math.pi/2, 0) * 
+        CFrame.fromEulerAnglesXYZ(math.pi/2, 0, 0) * 
+        CFrame.fromEulerAnglesXYZ(0, -math.pi/2, 0)
+    character.Torso["Left Shoulder"].C1 = CFrame.new(0, 0.5, 0)
+    
+    -- Right arm chicken pose
+    character.Torso["Right Shoulder"].C0 = CFrame.new(1.5, 0.5, 0) * 
+        CFrame.fromEulerAnglesXYZ(0, -math.pi/2, 0) * 
+        CFrame.fromEulerAnglesXYZ(math.pi/2, 0, 0) * 
+        CFrame.fromEulerAnglesXYZ(0, -math.pi/2, 0)
+    character.Torso["Right Shoulder"].C1 = CFrame.new(0, 0.5, 0)
+end)
+
+createButton("Head shake", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local neck = character:WaitForChild("Torso"):WaitForChild("Neck")
+
+    -- Side-to-side shaking
+    for x = 1, math.huge, 0.2 do 
+        task.wait() 
+        neck.C0 = CFrame.new(math.sin(x) / 1, 1.5, 0) 
+        neck.C1 = CFrame.new(0, 0, 0) 
+    end 
+
+    -- Spinning head effect
+    for x = 1, math.huge, 0.1 do 
+        task.wait() 
+        neck.C0 = CFrame.new(0, 1.5, 0) * CFrame.fromAxisAngle(Vector3.new(0, 1, 0), x) 
+        neck.C1 = CFrame.new(0, 0, 0) 
+    end 
+
+    -- Big head effect on all players
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("Head") then
+            local headMesh = player.Character.Head:FindFirstChildOfClass("SpecialMesh")
+            if headMesh then
+                headMesh.Scale = Vector3.new(100, 100, 100)
+                task.wait(0.5)
+                headMesh.Scale = Vector3.new(1.25, 1.25, 1.25)
+            end
+        end
+    end
+end)
+
+createButton("Floating pad", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local torso = character:WaitForChild("Torso")
+
+    local pad = Instance.new("Part")
+    pad.Parent = workspace
+    pad.Name = "FloatingPad_" .. player.Name
+    pad.Size = Vector3.new(8, 1.2, 8)
+    pad.Anchored = true
+    pad.Locked = true
+    pad.BrickColor = BrickColor.new(104) -- Dark stone gray
+    
+    -- Apply custom texture
+    local texture = Instance.new("Decal")
+    texture.Parent = pad
+    texture.Texture = "rbxassetid://126968470687373"
+    texture.Face = "Top"
+    
+    -- Smooth cylinder shape
+    local mesh = Instance.new("CylinderMesh")
+    mesh.Scale = Vector3.new(1, 0.5, 1)
+    mesh.Parent = pad
+
+    -- Movement loop (with proper cleanup)
+    local connection
+    connection = game:GetService("RunService").Heartbeat:Connect(function()
+        pad.CFrame = CFrame.new(torso.Position.X, torso.Position.Y - 4, torso.Position.Z)
+    end)
+
+    -- Cleanup when player dies or leaves
+    player.CharacterRemoving:Connect(function()
+        connection:Disconnect()
+        pad:Destroy()
+    end)
+end)
+
     createButton("Epik power", function()
         for _, player in pairs(game.Players:GetPlayers()) do
             if player.Character and player.Character:FindFirstChild("Humanoid") then
