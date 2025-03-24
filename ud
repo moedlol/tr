@@ -1726,33 +1726,19 @@ end)
 createButton("Head shake", function()
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
-    local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso") -- Supports both R6 and R15
-    if not torso then return end
-    
-    local neck = torso:FindFirstChild("Neck")
-    if not neck then return end
+    local neck = character:WaitForChild("Torso"):WaitForChild("Neck")
 
-    -- Save the original position
-    local originalC0 = neck.C0
+    while true do
+        for x = -0.5, 0.5, 0.1 do  -- Moves head side to side smoothly
+            task.wait(0.05)
+            neck.C0 = CFrame.new(x, 1.5, 0) -- Only moves left and right
+            neck.C1 = CFrame.new(0, 0, 0)
+        end
 
-    -- Side-to-side shaking effect for 3 seconds
-    for x = 1, 30 do -- Runs for approximately 3 seconds (30 iterations with 0.1s delay)
-        task.wait(0.1) 
-        neck.C0 = originalC0 * CFrame.Angles(0, math.sin(x * 2) * 0.5, 0) -- Small side shake
-    end 
-
-    -- Reset head position
-    neck.C0 = originalC0 
-
-    -- Apply the big head effect on all players
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        if player.Character and player.Character:FindFirstChild("Head") then
-            local headMesh = player.Character.Head:FindFirstChildOfClass("SpecialMesh")
-            if headMesh then
-                headMesh.Scale = Vector3.new(10, 10, 10) -- Increase head size
-                task.wait(0.5)
-                headMesh.Scale = Vector3.new(1.25, 1.25, 1.25) -- Reset to normal
-            end
+        for x = 0.5, -0.5, -0.1 do  -- Moves back to the original side
+            task.wait(0.05)
+            neck.C0 = CFrame.new(x, 1.5, 0)
+            neck.C1 = CFrame.new(0, 0, 0)
         end
     end
 end)
