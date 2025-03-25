@@ -2060,14 +2060,12 @@ createButton("Morph Duck", function()
     -- Add the duck mesh
     local mesh = Instance.new("SpecialMesh", duckBody)
     mesh.MeshId = "rbxassetid://17399705213" -- Duck Mesh
-    mesh.TextureId = "rbxassetid://17399705259" -- Correct Duck Texture
+    mesh.TextureId = "rbxassetid://17399705259" -- Duck Texture
     mesh.Scale = Vector3.new(5, 5, 5)
 
-    -- 🔥 FIX: Adjust Offset to Center the Model
+    -- 🔥 **FIX: Adjust Offset & Rotation to Center the Duck**
     mesh.Offset = Vector3.new(0, -2.5, 0) -- Move down slightly to align better
-
-    -- 🔥 FIX: Rotate the Duck to Face Forward
-    duckBody.Orientation = Vector3.new(0, 103, 0) -- Adjust rotation so it faces forward
+    duckBody.Orientation = Vector3.new(0, 180, 0) -- Rotate to face forward (adjust as needed)
 
     -- Weld the duck to the HumanoidRootPart (so it follows the player)
     local weld = Instance.new("WeldConstraint", duckBody)
