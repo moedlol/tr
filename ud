@@ -1337,7 +1337,6 @@ end)
         wait(5)
         jumpscareGui:Destroy()
     end)
-    
 
     createButton("Plane", function()
         local player = game.Players.LocalPlayer
@@ -2110,23 +2109,32 @@ end)
         end
     end)
 
-createButton("Plane v2", function()
+createButton("Plane", function()
     repeat wait() until game:IsLoaded() and game:service("Players").LocalPlayer.Character ~= nil
     wait(0.4) 
-    for i, v in pairs(game:service("Players").LocalPlayer.Character:children()) do 
-        if v ~= script then 
+
+    local player = game:GetService("Players").LocalPlayer
+    local char = player.Character
+
+    -- Ensure the character has a Humanoid
+    if not char:FindFirstChild("Humanoid") then
+        local humanoid = Instance.new("Humanoid", char)
+        humanoid.Name = "Humanoid"
+    end
+
+    -- Remove all parts except the script, Humanoid, and essential components
+    for i, v in pairs(char:GetChildren()) do 
+        if v ~= script and not v:IsA("Humanoid") and not v:IsA("HumanoidRootPart") then 
             v:Destroy() 
         end 
     end 
 
-    local player = game:service("Players").LocalPlayer
     local mouse = player:GetMouse() 
     local cam = workspace.CurrentCamera 
-    local char = player.Character 
-    local Torsoz = char:FindFirstChild("Torso") 
+    local Torsoz = char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Torso") 
     local NV = Vector3.new() 
     local Main 
-    local W,S = false,false 
+    local W, S = false, false 
     local DoublePress = {nil,0} 
     script.Parent = char 
 
@@ -2135,12 +2143,56 @@ createButton("Plane v2", function()
     local Speed = 0 
     local MinSpeed = 0 
     local MaxSpeed = 3.2 
-    local DesiredDirection = cam.CoordinateFrame.lookVector 
+    local DesiredDirection = cam.CoordinateFrame.LookVector 
     local Direction = DesiredDirection 
     local Roll = 0 
     local AllowTrails = true 
 
     script.Name = "AdvFlight"
+
+    -- Plane movement system (simple physics-based approach)
+    local planeBody = Instance.new("Part", char)
+    planeBody.Size = Vector3.new(10, 3, 10)
+    planeBody.Position = Torsoz.Position + Vector3.new(0, 5, 0)
+    planeBody.Anchored = false
+    planeBody.BrickColor = BrickColor.new("Really black")
+    planeBody.Material = Enum.Material.SmoothPlastic
+    planeBody.Name = "Plane"
+    
+    -- Attach the player to the plane
+    local weld = Instance.new("Weld", planeBody)
+    weld.Part0 = planeBody
+    weld.Part1 = Torsoz
+    weld.C0 = CFrame.new(0, 2, 0)
+
+    -- Apply BodyVelocity for movement
+    local bodyVelocity = Instance.new("BodyVelocity", planeBody)
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+
+    -- Keybind movement controls
+    mouse.KeyDown:Connect(function(key)
+        if key == "w" then
+            bodyVelocity.Velocity = cam.CFrame.LookVector * 50
+        elseif key == "s" then
+            bodyVelocity.Velocity = cam.CFrame.LookVector * -50
+        elseif key == "a" then
+            planeBody.CFrame = planeBody.CFrame * CFrame.Angles(0, math.rad(-10), 0)
+        elseif key == "d" then
+            planeBody.CFrame = planeBody.CFrame * CFrame.Angles(0, math.rad(10), 0)
+        elseif key == "space" then
+            bodyVelocity.Velocity = Vector3.new(0, 50, 0)
+        elseif key == "leftshift" then
+            bodyVelocity.Velocity = Vector3.new(0, -50, 0)
+        end
+    end)
+
+    -- Stop movement when key is released
+    mouse.KeyUp:Connect(function(key)
+        if key == "w" or key == "s" or key == "space" or key == "leftshift" then
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+        end
+    end)
 end)
 
     createButton("Reset Everything", function()
