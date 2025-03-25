@@ -2110,6 +2110,39 @@ end)
         end
     end)
 
+createButton("Plane v2", function()
+    repeat wait() until game:IsLoaded() and game:service("Players").LocalPlayer.Character ~= nil
+    wait(0.4) 
+    for i, v in pairs(game:service("Players").LocalPlayer.Character:children()) do 
+        if v ~= script then 
+            v:Destroy() 
+        end 
+    end 
+
+    local player = game:service("Players").LocalPlayer
+    local mouse = player:GetMouse() 
+    local cam = workspace.CurrentCamera 
+    local char = player.Character 
+    local Torsoz = char:FindFirstChild("Torso") 
+    local NV = Vector3.new() 
+    local Main 
+    local W,S = false,false 
+    local DoublePress = {nil,0} 
+    script.Parent = char 
+
+    local TrailParts = {} 
+    local Acceleration = 0.08 
+    local Speed = 0 
+    local MinSpeed = 0 
+    local MaxSpeed = 3.2 
+    local DesiredDirection = cam.CoordinateFrame.lookVector 
+    local Direction = DesiredDirection 
+    local Roll = 0 
+    local AllowTrails = true 
+
+    script.Name = "AdvFlight"
+end)
+
     createButton("Reset Everything", function()
         game.Lighting:ClearAllChildren()
         game.Lighting.Ambient = Color3.new(1, 1, 1)
