@@ -2065,7 +2065,7 @@ createButton("Morph Duck", function()
 
     -- 🔥 **FIX: Adjust Offset & Rotation to Center the Duck**
     mesh.Offset = Vector3.new(0, -2.5, 0) -- Move down slightly to align better
-    duckBody.Orientation = Vector3.new(0, 180, 0) -- Rotate to face forward (adjust as needed)
+    duckBody.Orientation = Vector3.new(90, 270, 0) -- Rotate to face forward (adjust as needed)
 
     -- Weld the duck to the HumanoidRootPart (so it follows the player)
     local weld = Instance.new("WeldConstraint", duckBody)
