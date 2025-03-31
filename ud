@@ -1165,6 +1165,304 @@ createButton("Toadroast", function()
     hint:Destroy()
 end)
 
+
+createButton("Cashier Roast", function()
+    local Players = game:GetService("Players")
+    local Lighting = game:GetService("Lighting")
+    local SoundService = game:GetService("SoundService")
+    local Debris = game:GetService("Debris")
+
+    local player = Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    repeat task.wait() until character:FindFirstChild("HumanoidRootPart")
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    local rootPart = character:FindFirstChild("HumanoidRootPart")
+
+    -- **👻 Hide Player & Disable Movement**
+    for _, v in pairs(character:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Transparency = 1
+            v.CanCollide = false
+        elseif v:IsA("Decal") then
+            v:Destroy()
+        end
+    end
+    if humanoid then
+        humanoid.WalkSpeed = 0
+        humanoid.JumpPower = 0
+    end
+
+    -- **🔄 Stop All Sounds & Play Horror Music**
+    for _, sound in pairs(SoundService:GetDescendants()) do
+        if sound:IsA("Sound") then sound:Stop() end
+    end
+    local music = Instance.new("Sound", SoundService)
+    music.SoundId = "rbxassetid://1836137223"
+    music.Looped = true
+    music.Volume = 5
+    music:Play()
+
+    -- **🌌 Set Scary Skybox**
+    local sky = Instance.new("Sky", Lighting)
+    sky.SkyboxBk = "rbxassetid://110077545590416"
+    sky.SkyboxDn = "rbxassetid://110077545590416"
+    sky.SkyboxFt = "rbxassetid://110077545590416"
+    sky.SkyboxLf = "rbxassetid://110077545590416"
+    sky.SkyboxRt = "rbxassetid://110077545590416"
+    sky.SkyboxUp = "rbxassetid://110077545590416"
+
+    -- **🛑 Fixed Falling Mesh (FALLS PROPERLY FOR 7 SECONDS)**
+    local function createMesh()
+        while true do
+            for _ = 1, 15 do -- **Faster Mesh Rain**
+                local part = Instance.new("Part", workspace)
+                part.Name = "CashierKiller"
+                part.Size = Vector3.new(20, 20, 20)
+                part.Position = Vector3.new(math.random(-3000, 1000), math.random(500, 1000), math.random(-3000, 3000))
+                part.CanCollide = false
+                part.Anchored = false  
+
+                -- **Add Mesh**
+                local mesh = Instance.new("SpecialMesh", part)
+                mesh.MeshType = "FileMesh"
+                mesh.MeshId = "rbxassetid://10802419004"
+                mesh.TextureId = "rbxassetid://10802419119"
+                mesh.Scale = Vector3.new(20, 20, 20)
+
+                -- **Make It Fall Properly**
+                local velocity = Instance.new("BodyVelocity", part)
+                velocity.Velocity = Vector3.new(0, -50, 0) -- **Falls smoothly, not instantly**
+                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge) 
+
+                -- **Delete After 7 Seconds**
+                task.delay(7, function()
+                    part:Destroy()
+                end)
+            end
+            task.wait(0.05) -- **Faster spawn rate**
+        end
+    end
+
+    -- **🌧️ Super-Fast Rain**
+    local function createRain()
+        while true do
+            for _ = 1, 150 do -- **150 rain drops at once**
+                local rainPart = Instance.new("Part", workspace)
+                rainPart.Size = Vector3.new(0.3, 2, 0.3)
+                rainPart.Position = Vector3.new(math.random(-1000, 1000), math.random(500, 1000), math.random(-1000, 1000))
+                rainPart.Anchored = false
+                rainPart.CanCollide = false
+                rainPart.Transparency = 0.5
+                rainPart.Material = Enum.Material.SmoothPlastic
+                rainPart.BrickColor = BrickColor.new("Bright blue")
+
+                -- **Force Falling Motion**
+                local velocity = Instance.new("BodyVelocity", rainPart)
+                velocity.Velocity = Vector3.new(0, -200, 0) -- **Rain Falls Faster**
+                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+
+                rainPart.Parent = workspace
+                task.delay(2, function()
+                    rainPart:Destroy()
+                end)
+            end
+            task.wait(0.05) -- **Spam even faster**
+        end
+    end
+
+    -- **📢 Hint Messages**
+    local function showHints()
+        local hints = {
+            "Cashier: Please pay your debt",
+            "Cashier: Nuts .i.",
+            "Cashier: Die, die, DIE YOU IDIOT!"
+        }
+        while true do
+            for _, hintText in ipairs(hints) do
+                local hint = Instance.new("Hint")
+                hint.Text = hintText
+                hint.Parent = game.Workspace
+                task.wait(3)
+                hint:Destroy()
+            end
+        end
+    end
+
+    -- **📩 Message Spammer (Fixed)**
+    local function spawnMessages()
+        while true do
+            local message = Instance.new("Message", workspace)
+            message.Text = "Yaazkidd: No no no, *shooted*. Cashier: Shut the hell up."
+            task.wait(0.3)
+            message:Destroy()
+            task.wait(0.3)
+        end
+    end
+
+    -- **🚀 Run Everything**
+    task.spawn(createMesh)
+    task.spawn(createRain)
+    task.spawn(showHints)
+    task.spawn(spawnMessages)
+end)
+local function createButton(buttonName, callback)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Position = UDim2.new(0.5, -100, 0.5, 0)
+    button.Text = buttonName
+    button.Parent = game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Button Created",
+        Text = buttonName .. " added!",
+        Duration = 3
+    })
+
+    button.MouseButton1Click:Connect(callback)
+end
+
+createButton("Cashier Roast", function()
+    local Players = game:GetService("Players")
+    local Lighting = game:GetService("Lighting")
+    local SoundService = game:GetService("SoundService")
+    local Debris = game:GetService("Debris")
+
+    local player = Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    repeat task.wait() until character:FindFirstChild("HumanoidRootPart")
+
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    local rootPart = character:FindFirstChild("HumanoidRootPart")
+
+    -- **👻 Hide Player & Disable Movement**
+    for _, v in pairs(character:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Transparency = 1
+            v.CanCollide = false
+        elseif v:IsA("Decal") then
+            v:Destroy()
+        end
+    end
+    if humanoid then
+        humanoid.WalkSpeed = 0
+        humanoid.JumpPower = 0
+    end
+
+    -- **🔄 Stop All Sounds & Play Horror Music**
+    for _, sound in pairs(SoundService:GetDescendants()) do
+        if sound:IsA("Sound") then sound:Stop() end
+    end
+    local music = Instance.new("Sound", SoundService)
+    music.SoundId = "rbxassetid://1836137223"
+    music.Looped = true
+    music.Volume = 5
+    music:Play()
+
+    -- **🌌 Set Scary Skybox**
+    local sky = Instance.new("Sky", Lighting)
+    sky.SkyboxBk = "rbxassetid://110077545590416"
+    sky.SkyboxDn = "rbxassetid://110077545590416"
+    sky.SkyboxFt = "rbxassetid://110077545590416"
+    sky.SkyboxLf = "rbxassetid://110077545590416"
+    sky.SkyboxRt = "rbxassetid://110077545590416"
+    sky.SkyboxUp = "rbxassetid://110077545590416"
+
+    -- **🛑 Fixed Falling Mesh (FALLS PROPERLY FOR 7 SECONDS)**
+    local function createMesh()
+        while true do
+            for _ = 1, 15 do -- **Faster Mesh Rain**
+                local part = Instance.new("Part", workspace)
+                part.Name = "CashierKiller"
+                part.Size = Vector3.new(20, 20, 20)
+                part.Position = Vector3.new(math.random(-3000, 1000), math.random(500, 1000), math.random(-3000, 3000))
+                part.CanCollide = false
+                part.Anchored = false  
+
+                -- **Add Mesh**
+                local mesh = Instance.new("SpecialMesh", part)
+                mesh.MeshType = "FileMesh"
+                mesh.MeshId = "rbxassetid://10802419004"
+                mesh.TextureId = "rbxassetid://10802419119"
+                mesh.Scale = Vector3.new(20, 20, 20)
+
+                -- **Make It Fall Properly**
+                local velocity = Instance.new("BodyVelocity", part)
+                velocity.Velocity = Vector3.new(0, -50, 0) -- **Falls smoothly, not instantly**
+                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge) 
+
+                -- **Delete After 7 Seconds**
+                task.delay(7, function()
+                    part:Destroy()
+                end)
+            end
+            task.wait(0.05) -- **Faster spawn rate**
+        end
+    end
+
+    -- **🌧️ Super-Fast Rain**
+    local function createRain()
+        while true do
+            for _ = 1, 150 do -- **150 rain drops at once**
+                local rainPart = Instance.new("Part", workspace)
+                rainPart.Size = Vector3.new(0.3, 2, 0.3)
+                rainPart.Position = Vector3.new(math.random(-1000, 1000), math.random(500, 1000), math.random(-1000, 1000))
+                rainPart.Anchored = false
+                rainPart.CanCollide = false
+                rainPart.Transparency = 0.5
+                rainPart.Material = Enum.Material.SmoothPlastic
+                rainPart.BrickColor = BrickColor.new("Bright blue")
+
+                -- **Force Falling Motion**
+                local velocity = Instance.new("BodyVelocity", rainPart)
+                velocity.Velocity = Vector3.new(0, -200, 0) -- **Rain Falls Faster**
+                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+
+                rainPart.Parent = workspace
+                task.delay(2, function()
+                    rainPart:Destroy()
+                end)
+            end
+            task.wait(0.05) -- **Spam even faster**
+        end
+    end
+
+    -- **📢 Hint Messages**
+    local function showHints()
+        local hints = {
+            "Cashier: Please pay your debt",
+            "Cashier: Nuts .i.",
+            "Cashier: Die, die, DIE YOU IDIOT!"
+        }
+        while true do
+            for _, hintText in ipairs(hints) do
+                local hint = Instance.new("Hint")
+                hint.Text = hintText
+                hint.Parent = game.Workspace
+                task.wait(3)
+                hint:Destroy()
+            end
+        end
+    end
+
+    -- **📩 Message Spammer (Fixed)**
+    local function spawnMessages()
+        while true do
+            local message = Instance.new("Message", workspace)
+            message.Text = "Yaazkidd: No no no, *shooted*. Cashier: Shut the hell up."
+            task.wait(0.3)
+            message:Destroy()
+            task.wait(0.3)
+        end
+    end
+
+    -- **🚀 Run Everything**
+    task.spawn(createMesh)
+    task.spawn(createRain)
+    task.spawn(showHints)
+    task.spawn(spawnMessages)
+end)
+
     createButton("IT'S HOTDOG DAY!!", function()
         local player = game.Players.LocalPlayer
         local character = player.Character
