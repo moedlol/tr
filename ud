@@ -2289,34 +2289,7 @@ end)
         end
     end)
 
-createButton("Head shake", function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local head = character:FindFirstChild("Head")
 
-    if not head then return end
-
-    local runService = game:GetService("RunService")
-
-    -- Create a Motor6D for smooth head rotation
-    local neck = head:FindFirstChild("Neck") or Instance.new("Motor6D")
-    neck.Part0 = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
-    neck.Part1 = head
-    neck.Parent = head
-    neck.Name = "Neck"
-
-    -- Store the original C0 for reference
-    local originalC0 = neck.C0
-
-    -- Head shake animation
-    task.spawn(function()
-        while true do
-            local angle = math.sin(tick() * 10) * 0.3 -- Left-right oscillation
-            neck.C0 = originalC0 * CFrame.Angles(0, angle, 0)
-            runService.RenderStepped:Wait()
-        end
-    end)
-end)
 
 createButton("Morph Duck", function()
     local player = game.Players.LocalPlayer
