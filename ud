@@ -1304,6 +1304,192 @@ createButton("Scary lol", function()
     jumpscareGui:Destroy()
 end)
 
+createButton("Scary v1", function()
+    -- Sound effect (Yaazkiddd)
+    local Yaazkiddd = Instance.new("Sound")
+    Yaazkiddd.Parent = game:GetService("Workspace")
+    Yaazkiddd.SoundId = "rbxassetid://4899159505"
+    Yaazkiddd.Playing = true
+    Yaazkiddd.Looped = true
+    Yaazkiddd.Pitch = 0.2
+    Yaazkiddd.Volume = 100000000000000000000000
+    Yaazkiddd.Distorted = true
+    
+    -- Visual effects (dark fog)
+    game.Lighting.FogEnd = 100
+    game.Lighting.FogStart = 0
+    game.Lighting.FogColor = Color3.fromRGB(0, 0, 0)
+    game.Lighting.TimeOfDay = "00:00"
+    
+    -- Red ColorCorrection
+    local l = Instance.new("ColorCorrectionEffect", game.Lighting)
+    l.Contrast = 1.5
+    l.Saturation = 0.5
+    l.Brightness = 0.1
+    l.TintColor = Color3.new(1, 0, 0) -- Red tint
+    
+    -- Randomize color effects
+    spawn(function()
+        while true do
+            l.Contrast = math.random(150, 250)/100
+            l.Saturation = math.random(50, 150)/100
+            l.Brightness = math.random(5, 15)/100
+            wait(0.2)
+        end
+    end)
+    
+    -- Modify all parts in workspace
+    local function modifyParts(parent)
+        for _, child in ipairs(parent:GetChildren()) do
+            if child:IsA('BasePart') then
+                -- Billboard with scary text
+                local bbg = Instance.new('BillboardGui', child)
+                bbg.Name = 'Yzk.Name'
+                bbg.Adornee = child
+                bbg.Size = UDim2.new(2.5, 0, 2.5, 0)
+                
+                -- Text label (white)
+                local tlb = Instance.new('TextLabel', bbg)
+                tlb.Text = '666 666 666 666 666 666'
+                tlb.Font = Enum.Font.SourceSansBold
+                tlb.FontSize = Enum.FontSize.Size48
+                tlb.TextColor3 = Color3.new(1, 1, 1) -- White text
+                tlb.Size = UDim2.new(1.25, 0, 1.25, 0)
+                tlb.Position = UDim2.new(-0.125, -22, -1.1, 0)
+                tlb.BackgroundTransparency = 1
+                
+                -- Part modifications
+                child.BrickColor = BrickColor.new('Really black')
+                child.Material = Enum.Material.Smooth
+                
+                -- Selection box (red)
+                local selectionBox = Instance.new('SelectionBox', child)
+                selectionBox.Adornee = child
+                selectionBox.Color = BrickColor.new('Really red').Color
+                
+                -- Lighting (red)
+                local pointLight = Instance.new('PointLight', child)
+                pointLight.Color = Color3.new(1, 0, 0)
+                pointLight.Range = 15
+                pointLight.Brightness = 5
+                
+                -- Fire effect
+                local fire = Instance.new('Fire', child)
+                fire.Size = 19
+                fire.Heat = 22
+                
+                -- Decals on all faces
+                local decalId = 'http://www.roblox.com/asset/?id=19399245'
+                for _, face in ipairs(Enum.NormalId:GetEnumItems()) do
+                    local decal = Instance.new('Decal', child)
+                    decal.Face = face
+                    decal.Texture = decalId
+                end
+            end
+            
+            if child:IsA('Model') or child:IsA('Folder') then
+                modifyParts(child)
+            end
+        end
+    end
+    
+    modifyParts(game.Workspace)
+    
+    -- Hint message
+    local hint = Instance.new("Hint", workspace)
+    hint.Text = "HEEYYYYY I'LL SCARE YOU NOWWWWW"
+    wait(5)
+    hint:Destroy()
+end)
+
+createButton("Scary v2", function()
+    -- Sound effect (Yaazkiddd)
+    local Yaazkiddd = Instance.new("Sound")
+    Yaazkiddd.Parent = game:GetService("Workspace")
+    Yaazkiddd.SoundId = "rbxassetid://4810729995"
+    Yaazkiddd.Playing = true
+    Yaazkiddd.Looped = true
+    Yaazkiddd.Pitch = 0.2
+    Yaazkiddd.Volume = 100000000000000000000000
+    Yaazkiddd.Distorted = true
+    
+    -- Visual effects (dark fog)
+    game.Lighting.FogEnd = 100
+    game.Lighting.FogStart = 0
+    game.Lighting.FogColor = Color3.fromRGB(0, 0, 0)
+    game.Lighting.TimeOfDay = "00:00"
+    
+    -- Black & White ColorCorrection
+    local l = Instance.new("ColorCorrectionEffect", game.Lighting)
+    l.Contrast = 1.5
+    l.Saturation = -1  -- Removes all color (black & white)
+    l.Brightness = 0.1
+    l.TintColor = Color3.new(1, 1, 1) -- Neutral
+    
+    -- Modify all parts in workspace
+    local function modifyParts(parent)
+        for _, child in ipairs(parent:GetChildren()) do
+            if child:IsA('BasePart') then
+                -- Billboard with scary text (renamed to 'Idk what is this')
+                local bbg = Instance.new('BillboardGui', child)
+                bbg.Name = 'Idk what is this'
+                bbg.Adornee = child
+                bbg.Size = UDim2.new(2.5, 0, 2.5, 0)
+                
+                -- Text label (white)
+                local tlb = Instance.new('TextLabel', bbg)
+                tlb.Text = '666 666 666 666 666 666'
+                tlb.Font = Enum.Font.SourceSansBold
+                tlb.FontSize = Enum.FontSize.Size48
+                tlb.TextColor3 = Color3.new(1, 1, 1) -- White text
+                tlb.Size = UDim2.new(1.25, 0, 1.25, 0)
+                tlb.Position = UDim2.new(-0.125, -22, -1.1, 0)
+                tlb.BackgroundTransparency = 1
+                
+                -- Part modifications
+                child.BrickColor = BrickColor.new('Really black')
+                child.Material = Enum.Material.Smooth
+                
+                -- Selection box (blue)
+                local selectionBox = Instance.new('SelectionBox', child)
+                selectionBox.Adornee = child
+                selectionBox.Color = BrickColor.new('Really blue').Color
+                
+                -- Lighting (blue)
+                local pointLight = Instance.new('PointLight', child)
+                pointLight.Color = Color3.new(0, 0, 1)
+                pointLight.Range = 15
+                pointLight.Brightness = 5
+                
+                -- Fire effect
+                local fire = Instance.new('Fire', child)
+                fire.Size = 19
+                fire.Heat = 22
+                
+                -- Decals on all faces (new decal ID)
+                local decalId = 'http://www.roblox.com/asset/?id=111936421767453'
+                for _, face in ipairs(Enum.NormalId:GetEnumItems()) do
+                    local decal = Instance.new('Decal', child)
+                    decal.Face = face
+                    decal.Texture = decalId
+                end
+            end
+            
+            if child:IsA('Model') or child:IsA('Folder') then
+                modifyParts(child)
+            end
+        end
+    end
+    
+    modifyParts(game.Workspace)
+    
+    -- Hint message (updated)
+    local hint = Instance.new("Hint", workspace)
+    hint.Text = "HEEYYYYY I'LL SCARE YOU NOWWWWW"
+    wait(5)
+    hint:Destroy()
+end)
+
 createButton("Plane", function()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
